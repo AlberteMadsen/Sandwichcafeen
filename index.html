@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>Sandwich Cafeen – Web Prototype</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lora:ital,wght@0,400;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+    <style>
+        :root{
+            --br:#5c2e0e;--cr:#faf6f0;--cream:#f5ede0;
+            --sand:#e8d5b7;--sdk:#c9b08a;
+            --mid:#5a3a1a;--dk:#2c1a0e;--ac:#c8602a;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        html,body{font-family:'DM Sans',sans-serif;background:var(--cr);color:var(--dk);min-height:100vh;}
+
+        /* ── SCREENS ── */
+        .screen{display:none;min-height:100vh;flex-direction:column;}
+        .screen.active{display:flex;}
+        @keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+        .screen.active{animation:up .3s ease both;}
+
+        /* ── NAV ── */
+        nav{
+            display:flex;align-items:center;justify-content:space-between;
+            padding:18px 52px;background:var(--cr);
+            border-bottom:2px solid var(--br);
+            position:sticky;top:0;z-index:200;
+        }
+        .nav-left{display:flex;align-items:center;gap:24px;}
+        .logo{font-family:'Playfair Display',serif;font-size:1.65rem;font-weight:900;color:var(--br);cursor:pointer;text-decoration:none;}
+        .back-btn{
+            display:flex;align-items:center;gap:5px;
+            font-size:.84rem;font-weight:500;color:var(--mid);
+            padding:6px 14px;border:1px solid var(--sdk);border-radius:20px;
+            cursor:pointer;background:none;border-style:solid;
+            transition:background .15s,color .15s;font-family:'DM Sans',sans-serif;
+        }
+        .back-btn:hover{background:var(--sand);color:var(--br);}
+        .back-btn svg{width:15px;height:15px;stroke:currentColor;}
+        .nav-right{display:flex;align-items:center;gap:14px;}
+        .search-box{
+            display:flex;align-items:center;gap:8px;
+            background:var(--cream);border:1.5px solid var(--sdk);border-radius:30px;
+            padding:8px 16px;width:230px;
+        }
+
+        .search-box svg{width:14px;height:14px;stroke:var(--mid);flex-shrink:0;}
+        .search-box input{border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:.84rem;color:var(--dk);width:100%;outline:none;}
+        .search-box input::placeholder{color:var(--sdk);}
+        .cart-pill{
+            display:flex;align-items:center;gap:8px;
+            background:var(--br);color:var(--cr);
+            padding:10px 20px;border-radius:30px;cursor:pointer;border:none;
+            font-family:'DM Sans',sans-serif;font-size:.84rem;font-weight:500;
+            transition:background .15s;
+        }
+        .cart-pill:hover{background:var(--ac);}
+        .cart-pill svg{fill:var(--cr);width:15px;height:15px;}
+        .cart-badge{
+            background:var(--ac);color:var(--cr);font-size:.66rem;font-weight:700;
+            min-width:18px;height:18px;border-radius:9px;
+            display:none;align-items:center;justify-content:center;padding:0 4px;
+        }
+        .cart-badge.show{display:flex;}
+
+        /* ── SHARED LABEL ── */
+        .lbl{
+            font-size:.67rem;font-weight:500;letter-spacing:.9px;text-transform:uppercase;
+            color:var(--sdk);border-bottom:1px solid var(--sand);padding-bottom:8px;margin-bottom:16px;
+        }
+        .wrap{max-width:1140px;margin:0 auto;}
+
+        /* ══════ HOME ══════ */
+        .hero{
+            width:100%;height:440px;
+            background:linear-gradient(140deg,#a05030 0%,var(--br) 55%,#7a3810 100%);
+            display:flex;align-items:center;justify-content:center;
+            color:rgba(250,246,240,.45);font-style:italic;font-size:.9rem;flex-shrink:0;
+        }
+        .home-feature{background:var(--cream);border-top:2px solid var(--sand);border-bottom:2px solid var(--sand);padding:44px 52px;}
+        .home-grid{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:36px;align-items:center;}
+        .feat-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--br);margin-bottom:10px;}
+        .feat-img{width:100%;aspect-ratio:4/3;background:var(--sand);border:1px solid var(--sdk);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--sdk);font-size:.78rem;font-style:italic;transition:border-color .18s,transform .15s;}.feat-img[onclick]:hover{border-color:var(--br);transform:scale(1.01);}
+        .cta-col{display:flex;flex-direction:column;gap:14px;}
+        .see-menu-btn{
+            display:block;text-align:center;
+            background:var(--dk);color:var(--cr);
+            font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;
+            padding:17px 40px;border-radius:50px;cursor:pointer;border:none;
+            transition:background .18s;
+        }
+        .see-menu-btn:hover{background:var(--ac);}
+        .cta-note{font-family:'Lora',serif;font-style:italic;color:var(--mid);font-size:.88rem;background:var(--sand);padding:13px 16px;border-radius:8px;line-height:1.55;}
+        .home-foot{padding:36px 52px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;align-items:center;border-top:1px solid var(--sand);}
+        .hf-lbl{font-size:.68rem;color:var(--mid);margin-bottom:6px;letter-spacing:.4px;}
+        .hf-val{font-size:.88rem;font-weight:500;line-height:1.7;}
+        .hf-h h3{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--br);margin-bottom:8px;}
+        .hf-h p{font-size:.88rem;line-height:1.9;}
+        .socials{display:flex;gap:10px;justify-content:flex-end;}
+        .soc{width:40px;height:40px;border-radius:50%;background:var(--dk);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s;}
+        .soc:hover{background:var(--ac);}
+        .soc svg{fill:var(--cr);width:18px;height:18px;}
+
+        /* ══════ MENU ══════ */
+        .menu-hero{background:var(--cream);border-bottom:1px solid var(--sand);padding:36px 52px 0;}
+        .menu-hero h1{font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:900;color:var(--br);margin-bottom:4px;}
+        .menu-hero p{font-family:'Lora',serif;font-style:italic;font-size:.9rem;color:var(--mid);margin-bottom:20px;}
+        .tab-row{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;}
+        .tab-row::-webkit-scrollbar{display:none;}
+        .tab{flex-shrink:0;padding:12px 22px;font-size:.88rem;font-weight:500;color:var(--mid);border-bottom:2.5px solid transparent;cursor:pointer;background:none;border-top:none;border-left:none;border-right:none;white-space:nowrap;transition:color .15s,border-color .15s;}
+        .tab.on{color:var(--br);border-bottom-color:var(--br);}
+        .menu-main{max-width:1140px;margin:0 auto;padding:36px 52px 80px;display:grid;grid-template-columns:200px 1fr;gap:48px;align-items:start;}
+        /* sidebar */
+        .sb{position:sticky;top:90px;}
+        .sb-lbl{font-size:.66rem;font-weight:500;letter-spacing:.8px;text-transform:uppercase;color:var(--sdk);margin-bottom:10px;padding:0 4px;}
+        .sb-link{display:block;padding:8px 12px;border-radius:8px;font-size:.84rem;color:var(--mid);cursor:pointer;border-left:3px solid transparent;transition:background .12s;}
+        .sb-link:hover{background:var(--sand);color:var(--br);}
+        .sb-link.on{background:var(--cream);color:var(--br);border-left-color:var(--br);font-weight:500;}
+        /* items */
+        .cat-panel{display:none;}.cat-panel.on{display:block;}
+        .sec{margin-bottom:36px;}
+        .items-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}@media(max-width:700px){.items-grid{grid-template-columns:1fr;}}
+        .item-card{
+            display:flex;flex-direction:row;align-items:stretch;
+            background:var(--cream);border:1px solid var(--sand);border-radius:12px;
+            overflow:hidden;cursor:pointer;
+            transition:border-color .2s,transform .15s,box-shadow .2s;
+        }
+        .item-card:hover{border-color:var(--sdk);transform:translateY(-2px);box-shadow:0 6px 20px rgba(92,46,14,.1);}
+        .ic-thumb{width:110px;flex-shrink:0;background:var(--sand);display:flex;align-items:center;justify-content:center;}
+        .ic-thumb svg{width:36px;height:36px;stroke:var(--sdk);fill:none;}
+        .ic-body{padding:12px 14px;flex:1;display:flex;flex-direction:column;min-width:0;}
+        .ic-top{display:flex;justify-content:space-between;gap:8px;margin-bottom:3px;}
+        .ic-name{font-size:.88rem;font-weight:500;}
+        .ic-price{font-size:.88rem;font-weight:500;white-space:nowrap;}
+        .ic-desc{font-size:.73rem;color:var(--mid);line-height:1.42;flex:1;margin-bottom:8px;
+            display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+        .ic-foot{display:flex;align-items:center;justify-content:space-between;}
+        .tags{display:flex;gap:4px;flex-wrap:wrap;}
+        .tag{font-size:.63rem;font-weight:500;padding:2px 8px;border-radius:20px;background:var(--sand);color:var(--br);}
+        .tag.new{background:var(--ac);color:var(--cr);}
+        .tag.veg{background:#d4edda;color:#2a5c38;}
+        .add-btn{width:30px;height:30px;border-radius:50%;background:var(--br);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .12s,transform .1s;}
+        .add-btn:hover{background:var(--ac);}
+        .add-btn:active{transform:scale(.9);}
+        .add-btn svg{width:14px;height:14px;stroke:var(--cr);}
+
+        /* item modal */
+        .modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:center;justify-content:center;}
+        .modal-ov.open{display:flex;}
+        .modal-box{background:var(--cr);border-radius:16px;width:520px;max-width:95vw;overflow:hidden;animation:pop .22s ease;position:relative;}
+        @keyframes pop{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+        .modal-img{width:100%;height:200px;background:var(--sand);display:flex;align-items:center;justify-content:center;}
+        .modal-img svg{width:52px;height:52px;stroke:var(--sdk);fill:none;}
+        .modal-body{padding:22px 24px 26px;}
+        .modal-name{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:700;color:var(--br);margin-bottom:5px;}
+        .modal-desc{font-size:.84rem;color:var(--mid);line-height:1.55;margin-bottom:7px;}
+        .modal-alg{font-size:.72rem;color:var(--sdk);font-style:italic;margin-bottom:18px;}
+        .modal-ft{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+        .modal-p{font-size:1.35rem;font-weight:500;}
+        .modal-acts{display:flex;align-items:center;gap:10px;}
+        .q-row{display:flex;align-items:center;gap:10px;}
+        .q-btn-lg{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--br);background:transparent;cursor:pointer;font-size:1.1rem;color:var(--br);display:flex;align-items:center;justify-content:center;transition:background .1s;}
+        .q-btn-lg:hover{background:var(--sand);}
+        .q-n{font-size:.9rem;font-weight:500;min-width:20px;text-align:center;}
+        .modal-add{padding:12px 24px;background:var(--dk);color:var(--cr);border:none;border-radius:30px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;cursor:pointer;white-space:nowrap;transition:background .15s;}
+        .modal-add:hover{background:var(--ac);}
+        .modal-close{position:absolute;top:12px;right:12px;background:rgba(92,46,14,.18);border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.95rem;color:var(--cr);font-weight:700;transition:background .12s;}
+        .modal-close:hover{background:rgba(92,46,14,.36);}
+
+        /* cart drawer */
+        .drawer-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:300;}
+        .drawer-ov.open{display:block;}
+        .drawer{
+            position:fixed;top:0;right:-420px;width:400px;height:100vh;
+            background:var(--cr);border-left:2px solid var(--sand);z-index:301;
+            display:flex;flex-direction:column;transition:right .3s ease;
+        }
+        .drawer.open{right:0;}
+        .drawer-head{display:flex;align-items:center;justify-content:space-between;padding:22px 24px;border-bottom:1px solid var(--sand);}
+        .drawer-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--br);}
+        .drawer-close{width:32px;height:32px;border-radius:50%;background:var(--sand);border:none;cursor:pointer;font-size:.9rem;color:var(--dk);display:flex;align-items:center;justify-content:center;transition:background .12s;}
+        .drawer-close:hover{background:var(--sdk);}
+        .drawer-items{flex:1;overflow-y:auto;padding:16px 24px;}
+        .drawer-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:12px;color:var(--mid);font-size:.88rem;font-style:italic;}
+        .d-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:.5px solid var(--sand);}
+        .d-row:last-child{border-bottom:none;}
+        .d-name{flex:1;font-size:.88rem;font-weight:500;}
+        .d-qty{display:flex;align-items:center;gap:8px;}
+        .dq-btn{width:24px;height:24px;border-radius:50%;border:1px solid var(--sdk);background:none;cursor:pointer;font-size:.9rem;color:var(--br);display:flex;align-items:center;justify-content:center;transition:background .1s;}
+        .dq-btn:hover{background:var(--sand);}
+        .d-price{font-size:.84rem;font-weight:500;min-width:50px;text-align:right;}
+        .drawer-foot{padding:18px 24px;border-top:1px solid var(--sand);}
+        .drawer-total{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;}
+        .drawer-total span:first-child{font-size:.84rem;color:var(--mid);}
+        .drawer-total span:last-child{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:var(--br);}
+        .go-kurv-btn{width:100%;padding:14px;background:var(--dk);color:var(--cr);border:none;border-radius:30px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;transition:background .15s;}
+        .go-kurv-btn:hover{background:var(--ac);}
+
+        /* ══════ KURV ══════ */
+        .kurv-wrap{max-width:760px;margin:0 auto;padding:52px 24px 80px;}
+        .kurv-wrap h1{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:var(--br);margin-bottom:2px;}
+        .kurv-sub{font-size:.82rem;color:var(--mid);margin-bottom:36px;}
+        .k-row{display:flex;align-items:center;gap:16px;padding:15px 0;border-bottom:1px solid var(--sand);}
+        .k-info{flex:1;}
+        .k-name{font-size:.92rem;font-weight:500;}
+        .k-desc{font-size:.74rem;color:var(--mid);margin-top:2px;}
+        .qty{display:flex;align-items:center;gap:10px;background:var(--cream);border:1px solid var(--sand);border-radius:30px;padding:5px 10px;}
+        .qb{width:24px;height:24px;border-radius:50%;border:none;background:none;cursor:pointer;font-size:.95rem;color:var(--br);display:flex;align-items:center;justify-content:center;transition:background .1s;}
+        .qb:hover{background:var(--sand);}
+        .qn{font-size:.84rem;font-weight:500;min-width:16px;text-align:center;}
+        .k-price{font-size:.92rem;font-weight:500;min-width:56px;text-align:right;}
+        .del-btn{background:none;border:none;cursor:pointer;color:var(--sdk);display:flex;padding:3px;transition:color .12s;}
+        .del-btn:hover{color:#a03020;}
+        .del-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;}
+        .empty-k{display:none;padding:60px 0;text-align:center;color:var(--mid);}
+        .empty-k p{font-size:.9rem;margin-bottom:16px;}
+        .empty-k button{padding:11px 26px;background:var(--br);color:var(--cr);border:none;border-radius:30px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+        .k-extras{margin-top:32px;}
+        .bread-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+        .bread-pill{padding:8px 18px;border:1.5px solid var(--sdk);border-radius:30px;font-size:.84rem;font-weight:500;color:var(--mid);cursor:pointer;background:none;font-family:'DM Sans',sans-serif;transition:all .13s;}
+        .bread-pill:hover{border-color:var(--br);color:var(--br);}
+        .bread-pill.on{background:var(--br);border-color:var(--br);color:var(--cr);}
+        .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+        .chip{padding:5px 13px;border:1.5px solid var(--sand);border-radius:20px;font-size:.74rem;color:var(--mid);cursor:pointer;background:none;user-select:none;transition:all .12s;}
+        .chip:hover{border-color:var(--sdk);color:var(--dk);}
+        .chip.on{background:var(--dk);border-color:var(--dk);color:var(--cr);}
+        .note-ta{width:100%;margin-top:10px;padding:11px 13px;border:1.5px solid var(--sdk);border-radius:10px;background:none;font-family:'DM Sans',sans-serif;font-size:.84rem;color:var(--dk);resize:vertical;min-height:80px;outline:none;line-height:1.5;}
+        .note-ta:focus{border-color:var(--br);}
+        .note-ta::placeholder{color:var(--sdk);}
+        .k-bottom{margin-top:36px;padding-top:22px;border-top:2px solid var(--br);}
+        .total-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:20px;}
+        .total-lbl{font-size:.88rem;color:var(--mid);}
+        .total-amt{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--br);}
+        .order-btn{width:100%;padding:16px;background:var(--dk);color:var(--cr);border:none;border-radius:40px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:500;cursor:pointer;margin-bottom:12px;transition:background .15s;}
+        .order-btn:hover{background:var(--ac);}
+        .order-btn:disabled{background:var(--sdk);cursor:not-allowed;}
+        .back-lnk{display:block;text-align:center;font-size:.8rem;color:var(--mid);text-decoration:underline;text-decoration-color:var(--sdk);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;width:100%;}
+        .back-lnk:hover{color:var(--br);}
+        .k-section{margin-top:28px;}
+
+        /* ══════ BETALING ══════ */
+        .pay-steps{display:flex;align-items:center;justify-content:center;gap:0;padding:18px;border-bottom:1px solid var(--sand);flex-shrink:0;}
+        .ps{display:flex;align-items:center;gap:7px;font-size:.76rem;font-weight:500;color:var(--sdk);}
+        .ps.done{color:var(--mid);}
+        .ps.cur{color:var(--br);}
+        .ps-dot{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--sdk);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;}
+        .ps.done .ps-dot{border-color:var(--mid);color:var(--mid);}
+        .ps.cur .ps-dot{border-color:var(--br);color:var(--br);background:var(--sand);}
+        .ps-line{width:52px;height:1px;background:var(--sand);margin:0 12px;}
+        .pay-layout{max-width:1000px;margin:0 auto;padding:44px 52px 80px;display:grid;grid-template-columns:1fr 320px;gap:52px;align-items:start;}
+        .form-sec{margin-bottom:26px;}
+        .field{margin-bottom:13px;}
+        .field label{display:block;font-size:.73rem;font-weight:500;color:var(--mid);margin-bottom:4px;}
+        .field input,.field select{width:100%;padding:10px 14px;border:1.5px solid var(--sdk);border-radius:8px;background:none;font-family:'DM Sans',sans-serif;font-size:.86rem;color:var(--dk);outline:none;transition:border-color .15s;appearance:none;}
+        .field input:focus,.field select:focus{border-color:var(--br);}
+        .field input::placeholder{color:var(--sdk);}
+        .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+        .pickup-opt{display:flex;align-items:flex-start;gap:11px;padding:13px 14px;border:1.5px solid var(--sand);border-radius:9px;margin-bottom:10px;cursor:pointer;transition:all .13s;}
+        .pickup-opt.on{border-color:var(--br);background:rgba(232,213,183,.3);}
+        .radio{width:17px;height:17px;border-radius:50%;border:1.5px solid var(--sdk);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+        .pickup-opt.on .radio{border-color:var(--br);}
+        .rdot{width:8px;height:8px;border-radius:50%;background:var(--br);display:none;}
+        .pickup-opt.on .rdot{display:block;}
+        .pt strong{font-size:.86rem;font-weight:500;display:block;margin-bottom:1px;}
+        .pt span{font-size:.72rem;color:var(--mid);}
+        /* time picker */
+        .time-picker-wrap{margin-top:12px;background:var(--cream);border:1.5px solid var(--sand);border-radius:10px;padding:14px;}
+        .time-picker-wrap label{display:block;font-size:.72rem;font-weight:500;color:var(--mid);margin-bottom:10px;}
+        .time-slots{display:flex;flex-wrap:wrap;gap:7px;}
+        .time-slot{padding:7px 14px;border:1.5px solid var(--sdk);border-radius:24px;font-size:.78rem;font-weight:500;color:var(--mid);background:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .13s;}
+        .time-slot.on{background:var(--br);border-color:var(--br);color:var(--cr);}
+        .time-asap{width:100%;padding:8px;margin-bottom:10px;border:1.5px solid var(--sdk);border-radius:24px;font-size:.78rem;font-weight:500;color:var(--mid);background:none;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:center;transition:all .13s;}
+        .time-asap.on{background:var(--br);border-color:var(--br);color:var(--cr);}
+        .time-note{font-size:.67rem;color:var(--sdk);margin-top:8px;}
+        /* payment tabs */
+        .pay-tabs{display:flex;gap:8px;margin-bottom:16px;}
+        .pay-tab{flex:1;padding:10px 8px;border:1.5px solid var(--sdk);border-radius:8px;background:none;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:500;color:var(--mid);cursor:pointer;transition:all .13s;display:flex;align-items:center;justify-content:center;gap:5px;}
+        .pay-tab svg{width:13px;height:13px;stroke:currentColor;fill:none;}
+        .pay-tab.on{border-color:var(--br);color:var(--br);background:var(--sand);}
+        .card-wrap{position:relative;}
+        .card-wrap input{padding-right:70px;letter-spacing:.8px;}
+        .card-icons{position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;gap:3px;}
+        .ci{width:26px;height:17px;border-radius:3px;border:1px solid var(--sand);display:flex;align-items:center;justify-content:center;font-size:.5rem;font-weight:700;background:var(--cr);}
+        .ci.v{color:#1a1f71;}.ci.m{color:#eb001b;}
+        /* pay sidebar */
+        .pay-sidebar{position:sticky;top:90px;}
+        .pay-sum{background:var(--sand);border-radius:14px;padding:22px 20px;margin-bottom:16px;}
+        .ps-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--br);margin-bottom:14px;}
+        .ps-row{display:flex;justify-content:space-between;font-size:.8rem;color:var(--mid);margin-bottom:7px;}
+        .ps-row span:last-child{font-weight:500;color:var(--dk);}
+        .ps-div{height:1px;background:var(--sdk);margin:10px 0;}
+        .ps-total{display:flex;justify-content:space-between;align-items:baseline;}
+        .ps-total span:first-child{font-size:.82rem;color:var(--mid);}
+        .ps-total span:last-child{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:var(--br);}
+        .pay-now-btn{width:100%;padding:15px;background:var(--dk);color:var(--cr);border:none;border-radius:40px;font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:500;cursor:pointer;margin-bottom:10px;transition:background .15s;}
+        .pay-now-btn:hover{background:var(--ac);}
+        .secure{display:flex;align-items:center;justify-content:center;gap:4px;font-size:.7rem;color:var(--mid);}
+        .secure svg{width:11px;height:11px;stroke:var(--mid);fill:none;}
+
+        /* ══════ BEKRÆFTELSE ══════ */
+        .confirm-wrap{max-width:520px;margin:0 auto;padding:72px 24px 80px;text-align:center;}
+        .check-ring{width:72px;height:72px;border-radius:50%;background:#d4edda;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
+        .check-ring svg{width:34px;height:34px;stroke:#2a6b3c;fill:none;stroke-width:2.5;}
+        .confirm-wrap h1{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--br);margin-bottom:8px;}
+        .confirm-wrap p{font-size:.88rem;color:var(--mid);line-height:1.65;margin-bottom:6px;}
+        .ord-num{font-size:.74rem;color:var(--sdk);margin:14px 0 22px;}
+        .ord-num span{background:var(--sand);padding:4px 12px;border-radius:20px;color:var(--mid);font-weight:500;}
+        .email-sent-card{background:#eef7f0;border:1.5px solid #b8dfc3;border-radius:10px;padding:12px 16px;text-align:center;margin-bottom:18px;}
+        .email-sent-card svg{width:18px;height:18px;stroke:#2a6b3c;fill:none;display:inline-block;vertical-align:middle;margin-right:5px;}
+        .email-sent-card span{font-size:.82rem;color:#2a6b3c;font-weight:500;vertical-align:middle;}
+        .email-sent-card small{display:block;font-size:.73rem;color:#4a9060;margin-top:3px;}
+        .conf-card{background:var(--sand);border-radius:12px;padding:18px 20px;text-align:left;margin-bottom:24px;}
+        .cc-row{display:flex;justify-content:space-between;font-size:.82rem;color:var(--mid);margin-bottom:7px;}
+        .cc-row:last-child{margin-bottom:0;}
+        .cc-row span:last-child{font-weight:500;color:var(--dk);}
+        .home-btn{display:inline-block;padding:14px 36px;background:var(--dk);color:var(--cr);border:none;border-radius:40px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;transition:background .15s;}
+        .home-btn:hover{background:var(--ac);}
+
+        /* ── FOOTER ── */
+        .site-footer{border-top:2px solid var(--sand);padding:24px 52px;display:flex;align-items:center;justify-content:space-between;font-size:.8rem;color:var(--mid);margin-top:auto;}
+        .sf-logo{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:900;color:var(--br);}
+        .sf-soc{display:flex;gap:10px;}
+        .sf-s{width:36px;height:36px;border-radius:50%;background:var(--dk);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s;}
+        .sf-s:hover{background:var(--ac);}
+        .sf-s svg{fill:var(--cr);width:16px;height:16px;}
+
+        @media(max-width:900px){
+            nav{padding:14px 22px;}
+            .menu-main{grid-template-columns:1fr;padding:22px 22px 60px;}
+            .sb{position:static;display:flex;flex-wrap:wrap;gap:6px;}
+            .sb-lbl,.sb-divider{display:none;}
+            .sb-link{border-left:none;border:1px solid var(--sand);border-radius:20px;padding:5px 12px;}
+            .sb-link.on{background:var(--br);color:var(--cr);}
+            .pay-layout{grid-template-columns:1fr;padding:22px 22px 60px;gap:24px;}
+            .pay-sidebar{position:static;}
+            .home-grid,.home-foot{grid-template-columns:1fr;padding:28px 22px;}
+            .hero{height:280px;}
+            .site-footer{padding:18px 22px;flex-direction:column;gap:12px;}
+        }
+    </style>
+</head>
+<body>
+
+<!-- ════════ SCREEN: HOME ════════ -->
+<div class="screen active" id="s-home">
+    <nav>
+        <span class="logo" onclick="go('home')">Sandwich Cafeen</span>
+        <ul style="display:flex;gap:30px;list-style:none;">
+            <li><a onclick="go('menu')" style="font-size:.9rem;color:var(--dk);text-decoration:underline;text-decoration-color:var(--br);cursor:pointer;">Menu</a></li>
+            <li><a style="font-size:.9rem;color:var(--dk);text-decoration:underline;text-decoration-color:var(--br);cursor:pointer;">Kontakt</a></li>
+        </ul>
+        <button class="cart-pill" onclick="openDrawer()">
+            <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6" stroke="white" stroke-width="2" fill="none"/><path d="M16 10a4 4 0 01-8 0" fill="none" stroke="white" stroke-width="2"/></svg>
+            Kurv
+            <span class="cart-badge" id="homeBadge">0</span>
+        </button>
+    </nav>
+    <div class="hero">📸 Cafe-billede her</div>
+    <div class="home-feature">
+        <div class="home-grid">
+            <div><div class="feat-title">Månedens nyhed</div><div class="feat-img" onclick="go('menu')" style="cursor:pointer;" title="Se menuen">📷 Sandwich-billede</div></div>
+            <div><div class="feat-title">Favoritten</div><div class="feat-img" onclick="go('menu')" style="cursor:pointer;" title="Se menuen">📷 Sandwich-billede</div></div>
+            <div class="cta-col">
+                <button class="see-menu-btn" onclick="go('menu')">Se Menu</button>
+                <div class="cta-note">Mad til begivenheder? Det klare vi også!<br><em>– Giv os et kald</em></div>
+            </div>
+        </div>
+    </div>
+    <div class="home-foot wrap">
+        <div><div class="hf-lbl">Kontakt</div><div class="hf-val">Storgade 12<br>1234 Byen<br>Tlf: 12 34 56 78</div></div>
+        <div class="hf-h"><h3>Åbningstider</h3><p><b>Man–Fre</b> 10–18<br><b>Lørdag</b> 10–15<br><b>Søndag</b> Lukket</p></div>
+        <div class="socials">
+            <div class="soc"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></div>
+            <div class="soc"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="white" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5"/></svg></div>
+        </div>
+    </div>
+    <footer class="site-footer"><span class="sf-logo">Sandwich Cafeen</span><span>Man–Fre 10–18 · Lørdag 10–15 · Søndag lukket</span><div class="sf-soc"><div class="sf-s"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></div><div class="sf-s"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="white" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5"/></svg></div></div></footer>
+</div>
+
+<!-- ════════ SCREEN: MENU ════════ -->
+<div class="screen" id="s-menu">
+    <nav>
+        <div class="nav-left">
+            <button class="back-btn" onclick="go('home')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>Tilbage</button>
+            <span class="logo" onclick="go('home')">Sandwich Cafeen</span>
+        </div>
+        <div class="nav-right">
+            <div class="search-box"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="searchInput" placeholder="Søg på menuen…" oninput="filterItems()"/></div>
+            <button class="cart-pill" onclick="openDrawer()">
+                <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6" stroke="white" stroke-width="2" fill="none"/><path d="M16 10a4 4 0 01-8 0" fill="none" stroke="white" stroke-width="2"/></svg>
+                Kurv
+                <span class="cart-badge" id="menuBadge">0</span>
+            </button>
+        </div>
+    </nav>
+    <div class="menu-hero">
+        <h1>Vores menu</h1>
+        <p>Friske sandwiches, wraps og salater – lavet med kærlighed hver dag</p>
+        <div class="tab-row" id="tabRow"></div>
+    </div>
+    <div class="menu-main wrap">
+        <aside class="sb" id="sidebar"></aside>
+        <main id="menuContent"></main>
+    </div>
+    <footer class="site-footer"><span class="sf-logo">Sandwich Cafeen</span><span>Man–Fre 10–18 · Lørdag 10–15 · Søndag lukket</span><div class="sf-soc"><div class="sf-s"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></div></div></footer>
+</div>
+
+<!-- ITEM MODAL -->
+<div class="modal-ov" id="modalOv" onclick="closeModal(event)">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeModal(null,true)">✕</button>
+        <div class="modal-img"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round"><path d="M3 6h18M3 12h18M8 18h8"/></svg></div>
+        <div class="modal-body">
+            <div class="modal-name" id="mName"></div>
+            <div class="modal-desc" id="mDesc"></div>
+            <div class="modal-alg" id="mAlg"></div>
+            <div class="modal-ft">
+                <div class="modal-p" id="mPrice"></div>
+                <div class="modal-acts">
+                    <div class="q-row"><button class="q-btn-lg" onclick="mAdj(-1)">−</button><span class="q-n" id="mQtyN">1</span><button class="q-btn-lg" onclick="mAdj(1)">+</button></div>
+                    <button class="modal-add" id="mAddBtn" onclick="confirmModal()">Læg i kurv</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CART DRAWER -->
+<div class="drawer-ov" id="drawerOv" onclick="closeDrawer()"></div>
+<div class="drawer" id="cartDrawer">
+    <div class="drawer-head">
+        <div class="drawer-title">Din kurv</div>
+        <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    </div>
+    <div class="drawer-items" id="drawerItems">
+        <div class="drawer-empty" id="drawerEmpty">Kurven er tom</div>
+    </div>
+    <div class="drawer-foot" id="drawerFoot" style="display:none;">
+        <div class="drawer-total"><span>Total</span><span id="drawerTotal">0 kr</span></div>
+        <button class="go-kurv-btn" onclick="closeDrawer();go('kurv')">Gå til kurv</button>
+    </div>
+</div>
+
+<!-- ════════ SCREEN: KURV ════════ -->
+<div class="screen" id="s-kurv">
+    <nav>
+        <div class="nav-left">
+            <button class="back-btn" onclick="go('menu')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>Tilbage til menu</button>
+            <span class="logo" onclick="go('home')">Sandwich Cafeen</span>
+        </div>
+        <div class="nav-right"><button class="cart-pill" onclick="openDrawer()"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6" stroke="white" stroke-width="2" fill="none"/><path d="M16 10a4 4 0 01-8 0" fill="none" stroke="white" stroke-width="2"/></svg>Kurv<span class="cart-badge" id="kurvBadge">0</span></button></div>
+    </nav>
+    <div class="kurv-wrap">
+        <h1>Din kurv</h1>
+        <p class="kurv-sub" id="kurvSub"></p>
+        <div class="lbl">Retter</div>
+        <div id="kurvRows"></div>
+        <div class="empty-k" id="emptyK"><p>Kurven er tom</p><button onclick="go('menu')">Se menuen</button></div>
+        <div class="k-extras" id="kurvExtras">
+            <div class="k-section"><div class="lbl">Brødtype</div><div class="bread-row"><button class="bread-pill" onclick="pickBread(this,'Franskbrød')">Franskbrød</button><button class="bread-pill" onclick="pickBread(this,'Surdej')">Surdej</button><button class="bread-pill" onclick="pickBread(this,'Rugbrød')">Rugbrød</button><button class="bread-pill" onclick="pickBread(this,'Ciabatta')">Ciabatta</button></div></div>
+            <div class="k-section"><div class="lbl">Allergier & bemærkninger</div>
+                <div class="chips"><div class="chip" onclick="this.classList.toggle('on')">Glutenfri</div><div class="chip" onclick="this.classList.toggle('on')">Laktosefri</div><div class="chip" onclick="this.classList.toggle('on')">Ingen æg</div><div class="chip" onclick="this.classList.toggle('on')">Ingen fisk</div><div class="chip" onclick="this.classList.toggle('on')">Ingen nødder</div><div class="chip" onclick="this.classList.toggle('on')">Vegetar</div><div class="chip" onclick="this.classList.toggle('on')">Vegan</div><div class="chip" onclick="this.classList.toggle('on')">Ingen løg</div></div>
+                <textarea class="note-ta" id="kurvNote" placeholder="Andre ønsker til køkkenet…"></textarea>
+            </div>
+            <div class="k-bottom">
+                <div class="total-row"><span class="total-lbl">Total inkl. moms</span><span class="total-amt" id="kurvTotal">0 kr</span></div>
+                <button class="order-btn" id="orderBtn" disabled onclick="go('betaling')">Afgiv ordre</button>
+                <button class="back-lnk" onclick="go('menu')">← Fortsæt på menuen</button>
+            </div>
+        </div>
+    </div>
+    <footer class="site-footer"><span class="sf-logo">Sandwich Cafeen</span><span>Man–Fre 10–18 · Lørdag 10–15 · Søndag lukket</span></footer>
+</div>
+
+<!-- ════════ SCREEN: BETALING ════════ -->
+<div class="screen" id="s-betaling">
+    <nav>
+        <div class="nav-left"><button class="back-btn" onclick="go('kurv')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>Tilbage til kurv</button><span class="logo" onclick="go('home')">Sandwich Cafeen</span></div>
+        <span style="font-size:.8rem;color:var(--mid);">Trin 2 af 2 — Betaling</span>
+    </nav>
+    <div class="pay-steps">
+        <div class="ps done"><div class="ps-dot">✓</div>Kurv</div>
+        <div class="ps-line"></div>
+        <div class="ps cur"><div class="ps-dot">2</div>Betaling</div>
+        <div class="ps-line"></div>
+        <div class="ps"><div class="ps-dot">3</div>Bekræftelse</div>
+    </div>
+    <div class="pay-layout">
+        <div>
+            <!-- PICKUP -->
+            <div class="form-sec">
+                <div class="lbl">Afhentning</div>
+                <div class="pickup-opt on" id="pu1" onclick="pickPU(1)"><div class="radio"><div class="rdot"></div></div><div class="pt"><strong>Afhent i cafeen</strong><span>Storgade 12</span></div></div>
+                <div class="pickup-opt" id="pu2" onclick="pickPU(2)"><div class="radio"><div class="rdot"></div></div><div class="pt"><strong>Spis her</strong><span>Vi finder et bord til dig</span></div></div>
+                <div class="time-picker-wrap">
+                    <label>Hvornår skal det være klar?</label>
+                    <button class="time-asap on" id="asapBtn" onclick="pickAsap()">Hurtigst muligt (~15 min)</button>
+                    <div class="time-slots" id="timeSlots"></div>
+                    <p class="time-note">Åbent Man–Fre 10–18 · Lørdag 10–15</p>
+                </div>
+            </div>
+            <!-- CONTACT -->
+            <div class="form-sec">
+                <div class="lbl">Kontaktoplysninger</div>
+                <div class="field-row"><div class="field"><label>Fornavn</label><input type="text" placeholder="Anders"/></div><div class="field"><label>Efternavn</label><input type="text" placeholder="Jensen"/></div></div>
+                <div class="field"><label>Telefon</label><input type="tel" placeholder="+45 12 34 56 78"/></div>
+                <div class="field"><label>E-mail <span style="color:var(--ac);font-size:.65rem;">– kvittering sendes hertil</span></label><input type="email" id="emailInput" placeholder="din@email.dk"/></div>
+            </div>
+            <!-- PAYMENT -->
+            <div class="form-sec">
+                <div class="lbl">Betalingsmetode</div>
+                <div class="pay-tabs">
+                    <button class="pay-tab on" onclick="pickPay(this,'card')"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Kort</button>
+                    <button class="pay-tab" onclick="pickPay(this,'mp')"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>MobilePay</button>
+                    <button class="pay-tab" onclick="pickPay(this,'cash')"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/></svg>Kontant</button>
+                </div>
+                <div id="pf-card">
+                    <div class="field"><label>Kortnummer</label><div class="card-wrap"><input type="text" placeholder="1234 5678 9012 3456" maxlength="19" oninput="fmtCard(this)"/><div class="card-icons"><div class="ci v">VISA</div><div class="ci m">MC</div></div></div></div>
+                    <div class="field-row"><div class="field"><label>Udløb</label><input type="text" placeholder="MM / ÅÅ" maxlength="7" oninput="fmtExp(this)"/></div><div class="field"><label>CVC</label><input type="text" placeholder="123" maxlength="3"/></div></div>
+                    <div class="field"><label>Navn på kort</label><input type="text" placeholder="ANDERS JENSEN" style="text-transform:uppercase"/></div>
+                </div>
+                <div id="pf-mp" style="display:none"><div class="field"><label>MobilePay nummer</label><input type="tel" placeholder="+45 12 34 56 78"/></div><p style="font-size:.72rem;color:var(--mid);margin-top:4px;">Godkend i MobilePay-appen efter du trykker betal.</p></div>
+                <div id="pf-cash" style="display:none"><p style="font-size:.82rem;color:var(--mid);padding:10px 0;">Betal kontant ved afhentning. Hav gerne det præcise beløb klar.</p></div>
+            </div>
+            <button class="back-lnk" onclick="go('kurv')">← Tilbage til kurv</button>
+        </div>
+        <!-- SIDEBAR SUMMARY -->
+        <aside class="pay-sidebar">
+            <div class="pay-sum">
+                <div class="ps-title">Din ordre</div>
+                <div id="paySumRows"></div>
+                <div class="ps-div"></div>
+                <div class="ps-row"><span>Afhentning</span><span id="payTimeVal">Hurtigst muligt</span></div>
+                <div class="ps-row" id="payBreadRow"><span>Brød</span><span id="payBreadVal">—</span></div>
+                <div class="ps-div"></div>
+                <div class="ps-total"><span>Total</span><span id="payTotal">0 kr</span></div>
+            </div>
+            <button class="pay-now-btn" onclick="go('bekreft')">Betal <span id="payNowAmt"></span></button>
+            <div class="secure"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Sikker betaling</div>
+        </aside>
+    </div>
+    <footer class="site-footer"><span class="sf-logo">Sandwich Cafeen</span><span>Man–Fre 10–18 · Lørdag 10–15 · Søndag lukket</span></footer>
+</div>
+
+<!-- ════════ SCREEN: BEKRÆFTELSE ════════ -->
+<div class="screen" id="s-bekreft">
+    <nav><span class="logo" onclick="go('home')">Sandwich Cafeen</span><span style="font-size:.8rem;color:var(--mid);">Ordre bekræftet</span></nav>
+    <div class="confirm-wrap">
+        <div class="check-ring"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <h1>Tak for din ordre!</h1>
+        <p id="confSubtitle">Vi er i gang med at lave din sandwich.<br>Den er klar til afhentning om ca. 15 min.</p>
+        <div class="ord-num"><span id="ordNum">Ordrenr. #—</span></div>
+        <div class="email-sent-card" id="emailSentCard" style="display:none;">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span>Kvittering sendt!</span>
+            <small id="emailSentTo"></small>
+        </div>
+        <div class="conf-card" id="confCard"></div>
+        <button class="home-btn" onclick="resetAndHome()">Tilbage til forsiden</button>
+    </div>
+    <footer class="site-footer"><span class="sf-logo">Sandwich Cafeen</span><span>Man–Fre 10–18 · Lørdag 10–15 · Søndag lukket</span><div class="sf-soc"><div class="sf-s"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></div><div class="sf-s"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="white" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5"/></svg></div></div></footer>
+</div>
+
+<script>
+    const MENU=[
+        {category:"Sandwiches",sections:[
+                {label:"Klassikere",items:[
+                        {id:1,name:"Skinke & ost",desc:"Lufttørret skinke, smeltet ost, dijonsennep, frisk salat og tomat",price:69,tags:["Populær"],allergens:"Gluten, mælk, sennep"},
+                        {id:2,name:"Tun mayo",desc:"Hjemmelavet tunmousse, kapers, rødløg og tomat",price:72,tags:["Klassiker"],allergens:"Fisk, æg, gluten"},
+                        {id:3,name:"Roastbeef bearnaise",desc:"Tyndt skåret roastbeef, hjemmelavet bearnaise og ristede løg",price:82,tags:["Bestseller"],allergens:"Gluten, mælk, æg, sennep"},
+                        {id:4,name:"Mozzarella & tomat",desc:"Frisk mozzarella, solmodnede tomater, basilikum og olivenolie",price:74,tags:["Veg"],allergens:"Gluten, mælk",veg:true},
+                    ]},
+                {label:"Månedens hit",items:[
+                        {id:5,name:"Kylling pesto",desc:"Grillet kylling, basilikumpesto, soltørret tomat og rucola på surdej",price:89,tags:["Nyhed"],allergens:"Gluten, nødder, mælk",isNew:true},
+                        {id:6,name:"Pulled pork",desc:"Langtidstilberedt pulled pork, coleslaw, jalapeño og BBQ-sauce",price:92,tags:["Populær"],allergens:"Gluten, sennep"},
+                    ]}
+            ]},
+        {category:"Wraps",sections:[{label:"Wraps",items:[
+                    {id:7,name:"Kylling caesar",desc:"Grillet kylling, parmesan, caesardressing og romaine i spinatwrap",price:82,tags:["Bestseller"],allergens:"Gluten, mælk, æg, fisk"},
+                    {id:8,name:"Falafel & hummus",desc:"Sprøde falafel, hummus, agurk, tomat og tahini",price:79,tags:["Veg"],allergens:"Gluten, sesam",veg:true},
+                    {id:9,name:"Rejer & avokado",desc:"Friske rejer, avokado og citronmayonnaise",price:89,tags:["Populær"],allergens:"Gluten, skaldyr, æg"},
+                ]}]},
+        {category:"Salater",sections:[{label:"Salater",items:[
+                    {id:10,name:"Grøn salat",desc:"Blandet salat, agurk, tomat, rødløg og citrondressing",price:69,tags:["Veg"],allergens:"Ingen",veg:true},
+                    {id:11,name:"Caesar salat",desc:"Romaine, parmesan, croutoner, kylling og caesardressing",price:82,tags:["Klassiker"],allergens:"Gluten, mælk, æg, fisk"},
+                ]}]},
+        {category:"Drikkevarer",sections:[
+                {label:"Kolde drikke",items:[
+                        {id:12,name:"Sodavand (dåse)",desc:"Coca-Cola, Fanta, Sprite eller Pepsi",price:22,tags:[],allergens:"Ingen"},
+                        {id:13,name:"Vand (0,5 L)",desc:"Kildevand – stille eller med brus",price:18,tags:[],allergens:"Ingen"},
+                        {id:14,name:"Friskpresset juice",desc:"Appelsiner presset ved bestilling",price:38,tags:["Populær"],allergens:"Ingen"},
+                    ]},
+                {label:"Varme drikke",items:[
+                        {id:15,name:"Kaffe",desc:"Nybrygget filterkaffe",price:28,tags:[],allergens:"Ingen"},
+                        {id:16,name:"Latte",desc:"Espresso og dampet mælk – stor kop",price:38,tags:[],allergens:"Mælk"},
+                    ]}
+            ]},
+    ];
+
+    let cart=[],activeCat=0,modalItem=null,modalQty=1,selectedBread=null,selectedTime='asap';
+    let menuBuilt=false;
+
+    /* ── NAV ── */
+    function go(id){
+        document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+        document.getElementById('s-'+id).classList.add('active');
+        window.scrollTo(0,0);
+        if(id==='menu')buildMenu();
+        if(id==='kurv')renderKurv();
+        if(id==='betaling'){renderPaySum();buildTimeSlots();}
+        if(id==='bekreft')renderConfirm();
+    }
+
+    /* ── BADGES ── */
+    function updateBadges(){
+        const n=cart.reduce((s,c)=>s+c.qty,0);
+        ['homeBadge','menuBadge','kurvBadge'].forEach(id=>{
+            const el=document.getElementById(id);
+            if(!el)return;
+            el.textContent=n;
+            el.classList.toggle('show',n>0);
+        });
+    }
+
+    /* ── DRAWER ── */
+    function openDrawer(){
+        renderDrawer();
+        document.getElementById('cartDrawer').classList.add('open');
+        document.getElementById('drawerOv').classList.add('open');
+        document.body.style.overflow='hidden';
+    }
+    function closeDrawer(){
+        document.getElementById('cartDrawer').classList.remove('open');
+        document.getElementById('drawerOv').classList.remove('open');
+        document.body.style.overflow='';
+    }
+    function renderDrawer(){
+        const cont=document.getElementById('drawerItems');
+        const empty=document.getElementById('drawerEmpty');
+        const foot=document.getElementById('drawerFoot');
+        const total=cart.reduce((s,c)=>s+c.price*c.qty,0);
+        document.getElementById('drawerTotal').textContent=total+' kr';
+        cont.querySelectorAll('.d-row').forEach(e=>e.remove());
+        if(cart.length===0){empty.style.display='flex';foot.style.display='none';return;}
+        empty.style.display='none';foot.style.display='block';
+        cart.forEach(item=>{
+            const r=document.createElement('div');r.className='d-row';
+            r.innerHTML=`<div class="d-name">${item.name}</div>
+      <div class="d-qty"><button class="dq-btn" onclick="dAdj(${item.id},-1)">−</button><span>${item.qty}</span><button class="dq-btn" onclick="dAdj(${item.id},1)">+</button></div>
+      <div class="d-price">${item.price*item.qty} kr</div>`;
+            cont.appendChild(r);
+        });
+    }
+    function dAdj(id,d){
+        const it=cart.find(c=>c.id===id);if(!it)return;
+        it.qty+=d;if(it.qty<=0)cart=cart.filter(c=>c.id!==id);
+        updateBadges();renderDrawer();
+    }
+
+    function findItem(id){for(const c of MENU)for(const s of c.sections)for(const i of s.items)if(i.id===id)return i;}
+    function addToCart(item,qty){const ex=cart.find(c=>c.id===item.id);if(ex)ex.qty+=qty;else cart.push({...item,qty});updateBadges();}
+
+    /* ── MENU ── */
+    function buildMenu(){
+        if(menuBuilt)return;menuBuilt=true;
+        const tabRow=document.getElementById('tabRow');
+        MENU.forEach((cat,i)=>{
+            const b=document.createElement('button');b.className='tab'+(i===0?' on':'');b.textContent=cat.category;b.onclick=()=>switchCat(i);tabRow.appendChild(b);
+        });
+        buildSidebar();buildContent();
+    }
+    function switchCat(i){
+        activeCat=i;
+        document.querySelectorAll('.tab').forEach((t,idx)=>t.classList.toggle('on',idx===i));
+        document.querySelectorAll('.cat-panel').forEach((p,idx)=>p.classList.toggle('on',idx===i));
+        buildSidebar();
+    }
+    function buildSidebar(){
+        const sb=document.getElementById('sidebar');sb.innerHTML='<div class="sb-lbl">Hop til</div>';
+        MENU[activeCat].sections.forEach((sec,si)=>{
+            const l=document.createElement('div');l.className='sb-link'+(si===0?' on':'');l.textContent=sec.label;
+            l.onclick=()=>{document.getElementById('sec-'+activeCat+'-'+si)?.scrollIntoView({behavior:'smooth',block:'start'});sb.querySelectorAll('.sb-link').forEach(x=>x.classList.remove('on'));l.classList.add('on');};
+            sb.appendChild(l);
+        });
+    }
+    function buildContent(){
+        const cont=document.getElementById('menuContent');cont.innerHTML='';
+        MENU.forEach((cat,ci)=>{
+            const panel=document.createElement('div');panel.className='cat-panel'+(ci===0?' on':'');
+            cat.sections.forEach((sec,si)=>{
+                const s=document.createElement('div');s.className='sec';s.id='sec-'+ci+'-'+si;
+                s.innerHTML='<div class="lbl">'+sec.label+'</div>';
+                const grid=document.createElement('div');grid.className='items-grid';
+                sec.items.forEach(item=>grid.appendChild(buildCard(item)));
+                s.appendChild(grid);panel.appendChild(s);
+            });
+            cont.appendChild(panel);
+        });
+    }
+    function buildCard(item){
+        const el=document.createElement('div');el.className='item-card';el.onclick=()=>openModal(item);
+        const tgs=(item.tags||[]).map(t=>{let c='tag';if(t==='Nyhed'||item.isNew)c+=' new';if(t==='Veg'||item.veg)c+=' veg';return`<span class="${c}">${t}</span>`;}).join('');
+        el.innerHTML=`<div class="ic-thumb"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round"><path d="M3 6h18M3 12h18M8 18h8"/></svg></div>
+    <div class="ic-body"><div class="ic-top"><div class="ic-name">${item.name}</div><div class="ic-price">${item.price} kr</div></div><div class="ic-desc">${item.desc}</div>
+    <div class="ic-foot"><div class="tags">${tgs}</div><button class="add-btn" onclick="quickAdd(event,${item.id})"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></div></div>`;
+        return el;
+    }
+    function quickAdd(e,id){e.stopPropagation();addToCart(findItem(id),1);}
+
+    /* ── MODAL ── */
+    function openModal(item){
+        modalItem=item;modalQty=1;
+        document.getElementById('mName').textContent=item.name;
+        document.getElementById('mDesc').textContent=item.desc;
+        document.getElementById('mAlg').textContent='Allergener: '+item.allergens;
+        document.getElementById('mPrice').textContent=item.price+' kr';
+        document.getElementById('mQtyN').textContent='1';
+        document.getElementById('mAddBtn').textContent='Læg i kurv – '+item.price+' kr';
+        document.getElementById('modalOv').classList.add('open');
+        document.body.style.overflow='hidden';
+    }
+    function closeModal(e,force){
+        if(force||(e&&e.target===document.getElementById('modalOv'))){
+            document.getElementById('modalOv').classList.remove('open');document.body.style.overflow='';
+        }
+    }
+    function mAdj(d){modalQty=Math.max(1,modalQty+d);document.getElementById('mQtyN').textContent=modalQty;document.getElementById('mAddBtn').textContent='Læg i kurv – '+(modalItem.price*modalQty)+' kr';}
+    function confirmModal(){addToCart(modalItem,modalQty);closeModal(null,true);}
+
+    /* ── SEARCH ── */
+    function filterItems(){
+        const q=document.getElementById('searchInput').value.toLowerCase().trim();
+        document.querySelectorAll('.cat-panel').forEach((p,i)=>p.classList.toggle('on',q?true:i===activeCat));
+        document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('on',!q&&i===activeCat));
+        document.querySelectorAll('.item-card').forEach(el=>{
+            const n=el.querySelector('.ic-name').textContent.toLowerCase();
+            const d=el.querySelector('.ic-desc').textContent.toLowerCase();
+            el.style.display=(!q||n.includes(q)||d.includes(q))?'':'none';
+        });
+    }
+
+    /* ── KURV ── */
+    function renderKurv(){
+        const qty=cart.reduce((s,c)=>s+c.qty,0);
+        const total=cart.reduce((s,c)=>s+c.price*c.qty,0);
+        document.getElementById('kurvSub').textContent=qty?`${qty} vare${qty!==1?'r':''}`:'Kurven er tom';
+        document.getElementById('kurvTotal').textContent=total+' kr';
+        document.getElementById('orderBtn').disabled=cart.length===0;
+        document.getElementById('emptyK').style.display=cart.length?'none':'block';
+        document.getElementById('kurvExtras').style.display=cart.length?'block':'none';
+        const rows=document.getElementById('kurvRows');rows.innerHTML='';
+        cart.forEach(item=>{
+            const d=document.createElement('div');d.className='k-row';
+            d.innerHTML=`<div class="k-info"><div class="k-name">${item.name}</div><div class="k-desc">${item.desc||''}</div></div>
+      <div class="qty"><button class="qb" onclick="kAdj(${item.id},-1)">−</button><span class="qn">${item.qty}</span><button class="qb" onclick="kAdj(${item.id},1)">+</button></div>
+      <div class="k-price">${item.price*item.qty} kr</div>
+      <button class="del-btn" onclick="kRm(${item.id})"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>`;
+            rows.appendChild(d);
+        });
+    }
+    function kAdj(id,d){const it=cart.find(c=>c.id===id);if(!it)return;it.qty+=d;if(it.qty<=0)cart=cart.filter(c=>c.id!==id);updateBadges();renderKurv();}
+    function kRm(id){cart=cart.filter(c=>c.id!==id);updateBadges();renderKurv();}
+    function pickBread(el,name){document.querySelectorAll('.bread-pill').forEach(p=>p.classList.remove('on'));el.classList.add('on');selectedBread=name;}
+
+    /* ── BETALING ── */
+    function renderPaySum(){
+        const rows=document.getElementById('paySumRows');rows.innerHTML='';
+        cart.forEach(c=>{const r=document.createElement('div');r.className='ps-row';r.innerHTML=`<span>${c.qty}× ${c.name}</span><span>${c.price*c.qty} kr</span>`;rows.appendChild(r);});
+        const total=cart.reduce((s,c)=>s+c.price*c.qty,0);
+        document.getElementById('payTotal').textContent=total+' kr';
+        document.getElementById('payNowAmt').textContent=total+' kr';
+        document.getElementById('payBreadVal').textContent=selectedBread||'—';
+        document.getElementById('payTimeVal').textContent=selectedTime==='asap'?'Hurtigst muligt':selectedTime;
+    }
+    function pickPU(n){[1,2].forEach(i=>document.getElementById('pu'+i).classList.remove('on'));document.getElementById('pu'+n).classList.add('on');}
+    function pickPay(el,type){
+        document.querySelectorAll('.pay-tab').forEach(t=>t.classList.remove('on'));el.classList.add('on');
+        document.getElementById('pf-card').style.display=type==='card'?'block':'none';
+        document.getElementById('pf-mp').style.display=type==='mp'?'block':'none';
+        document.getElementById('pf-cash').style.display=type==='cash'?'block':'none';
+    }
+    function fmtCard(el){let v=el.value.replace(/\D/g,'').slice(0,16);el.value=v.match(/.{1,4}/g)?.join(' ')||v;}
+    function fmtExp(el){let v=el.value.replace(/\D/g,'').slice(0,4);if(v.length>=2)v=v.slice(0,2)+' / '+v.slice(2);el.value=v;}
+
+    /* ── TIME ── */
+    let timeSlotsBuilt=false;
+    function buildTimeSlots(){
+        if(timeSlotsBuilt)return;timeSlotsBuilt=true;
+        const container=document.getElementById('timeSlots');
+        const now=new Date();
+        const day=now.getDay();
+        if(day===0){container.innerHTML='<span style="font-size:.76rem;color:var(--sdk);font-style:italic;">Vi er lukket i dag (søndag)</span>';return;}
+        const closeMin=day===6?15*60:18*60;
+        let startMin=Math.ceil((now.getHours()*60+now.getMinutes()+15)/15)*15+15;
+        if(startMin<10*60)startMin=10*60+15;
+        const slots=[];
+        for(let t=startMin;t<=closeMin-15&&slots.length<12;t+=15){const hh=Math.floor(t/60),mm=t%60;slots.push(`${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`);}
+        if(!slots.length){container.innerHTML='<span style="font-size:.76rem;color:var(--sdk);font-style:italic;">Ingen ledige tider i dag</span>';return;}
+        slots.forEach(s=>{const b=document.createElement('button');b.className='time-slot';b.textContent=s;b.onclick=()=>pickTime(b,s);container.appendChild(b);});
+    }
+    function pickAsap(){selectedTime='asap';document.getElementById('asapBtn').classList.add('on');document.querySelectorAll('.time-slot').forEach(b=>b.classList.remove('on'));if(document.getElementById('payTimeVal'))document.getElementById('payTimeVal').textContent='Hurtigst muligt';}
+    function pickTime(btn,val){selectedTime=val;document.getElementById('asapBtn').classList.remove('on');document.querySelectorAll('.time-slot').forEach(b=>b.classList.remove('on'));btn.classList.add('on');if(document.getElementById('payTimeVal'))document.getElementById('payTimeVal').textContent=val;}
+
+    /* ── BEKRÆFTELSE ── */
+    function renderConfirm(){
+        const num=Math.floor(10000+Math.random()*90000);
+        document.getElementById('ordNum').textContent='Ordrenr. #'+num;
+        const total=cart.reduce((s,c)=>s+c.price*c.qty,0);
+        const chips=[...document.querySelectorAll('.chip.on')].map(c=>c.textContent).join(', ');
+        const note=document.getElementById('kurvNote')?.value?.trim();
+        const email=document.getElementById('emailInput')?.value?.trim();
+        const timeLabel=selectedTime==='asap'?'Hurtigst muligt (~15 min)':selectedTime;
+        // subtitle
+        const sub=document.getElementById('confSubtitle');
+        if(sub)sub.innerHTML=selectedTime==='asap'?'Vi er i gang med at lave din sandwich.<br>Den er klar til afhentning om ca. 15 min.':`Vi er i gang med at lave din sandwich.<br>Den er klar til afhentning kl. <strong>${selectedTime}</strong>.`;
+        // email card
+        const card=document.getElementById('emailSentCard');
+        if(card){
+            if(email&&email.includes('@')){card.style.display='block';document.getElementById('emailSentTo').textContent='Kvittering sendt til '+email;}
+            else card.style.display='none';
+        }
+        // receipt
+        let html=cart.map(c=>`<div class="cc-row"><span>${c.qty}× ${c.name}</span><span>${c.price*c.qty} kr</span></div>`).join('');
+        html+=`<div class="cc-row" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--sdk)"><span><strong>Total</strong></span><span><strong>${total} kr</strong></span></div>`;
+        html+=`<div class="cc-row"><span>Afhentning</span><span>${timeLabel}</span></div>`;
+        if(selectedBread)html+=`<div class="cc-row"><span>Brød</span><span>${selectedBread}</span></div>`;
+        if(email&&email.includes('@'))html+=`<div class="cc-row"><span>E-mail</span><span>${email}</span></div>`;
+        if(chips)html+=`<div class="cc-row"><span>Allergier</span><span>${chips}</span></div>`;
+        if(note)html+=`<div class="cc-row"><span>Besked</span><span>${note}</span></div>`;
+        document.getElementById('confCard').innerHTML=html;
+    }
+
+    function resetAndHome(){
+        cart=[];selectedBread=null;selectedTime='asap';timeSlotsBuilt=false;
+        document.querySelectorAll('.bread-pill').forEach(p=>p.classList.remove('on'));
+        document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+        const n=document.getElementById('kurvNote');if(n)n.value='';
+        const ts=document.getElementById('timeSlots');if(ts)ts.innerHTML='';
+        const ab=document.getElementById('asapBtn');if(ab)ab.classList.add('on');
+        updateBadges();go('home');
+    }
+
+    updateBadges();
+</script>
+</body>
+</html>
