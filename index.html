@@ -11,9 +11,10 @@
         .carousel{position:relative;width:100%;height:440px;overflow:hidden;background:#5c2e0e;flex-shrink:0;}
         .carousel-track{display:flex;height:100%;transition:transform .5s cubic-bezier(.4,0,.2,1);}
         .carousel-slide{min-width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-        .s1{background:linear-gradient(140deg,#a05030 0%,#5c2e0e 55%,#7a3810 100%);}
-        .s2{background:linear-gradient(140deg,#7a3810 0%,#a05030 55%,#5c2e0e 100%);}
-        .s3{background:linear-gradient(140deg,#5c2e0e 0%,#7a3810 55%,#a05030 100%);}
+        /* Linje 14, 15 og 16 i din CSS skal se sådan her ud */
+        .s1{background: url('foto/Fasade.png') center/cover no-repeat; width: 100%; height: 100%; flex-shrink: 0;}
+        .s2{background: url('foto/træcafe.JPG') center/cover no-repeat; width: 100%; height: 100%; flex-shrink: 0;}
+        .s3{background: url('foto/Pesto.Kylling.png') center/cover no-repeat; width: 100%; height: 100%; flex-shrink: 0;}
         .slide-label{color:rgba(250,246,240,.45);font-style:italic;font-size:.9rem;}
         .carousel-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(250,246,240,.18);border:1.5px solid rgba(250,246,240,.3);color:rgba(250,246,240,.85);width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;z-index:10;transition:background .18s;}
         .carousel-btn:hover{background:rgba(250,246,240,.32);}
@@ -421,7 +422,6 @@
         <ul style="display:flex;gap:30px;list-style:none;">
             <li><a onclick="go('menu')" style="font-size:.9rem;color:var(--dk);text-decoration:underline;text-decoration-color:var(--br);cursor:pointer;">Menu</a></li>
             <li><a onclick="go('selskaber')" style="font-size:.9rem;color:var(--dk);text-decoration:underline;text-decoration-color:var(--br);cursor:pointer;">Selskaber</a></li>
-            <li><a style="font-size:.9rem;color:var(--dk);text-decoration:underline;text-decoration-color:var(--br);cursor:pointer;">Kontakt</a></li>
         </ul>
         <button class="cart-pill" onclick="openDrawer()">
             <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6" stroke="white" stroke-width="2" fill="none"/><path d="M16 10a4 4 0 01-8 0" fill="none" stroke="white" stroke-width="2"/></svg>
@@ -431,9 +431,9 @@
     </nav>
     <div class="carousel" id="heroCarousel">
         <div class="carousel-track" id="carouselTrack">
-            <div class="carousel-slide s1"><span class="slide-label">📸 Cafe-billede 1</span></div>
-            <div class="carousel-slide s2"><span class="slide-label">📸 Cafe-billede 2</span></div>
-            <div class="carousel-slide s3"><span class="slide-label">📸 Cafe-billede 3</span></div>
+            <div class="carousel-slide s1"><span class="slide-label"></span></div>
+            <div class="carousel-slide s2"><span class="slide-label"></span></div>
+            <div class="carousel-slide s3"><span class="slide-label"></span></div>
         </div>
         <button class="carousel-btn carousel-prev" onclick="carouselMove(-1)">&#8592;</button>
         <button class="carousel-btn carousel-next" onclick="carouselMove(1)">&#8594;</button>
@@ -575,7 +575,7 @@
                 <div class="pickup-opt" id="pu2" onclick="pickPU(2)"><div class="radio"><div class="rdot"></div></div><div class="pt"><strong>Spis her</strong><span>Vi finder et bord til dig</span></div></div>
                 <div class="time-picker-wrap">
                     <label>Hvornår skal det være klar?</label>
-                    <button class="time-asap on" id="asapBtn" onclick="pickAsap()">Hurtigst muligt (~15 min)</button>
+                    <button class="time-asap on" id="asapBtn" onclick="pickAsap()">Hurtigst muligt (~30 min)</button>
                     <div class="time-slots" id="timeSlots"></div>
                     <p class="time-note">Åbent Man–Fre 10–18 · Lørdag 10–15</p>
                 </div>
@@ -626,7 +626,7 @@
     <div class="confirm-wrap">
         <div class="check-ring"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
         <h1>Tak for din ordre!</h1>
-        <p id="confSubtitle">Vi er i gang med at lave din sandwich.<br>Den er klar til afhentning om ca. 15 min.</p>
+        <p id="confSubtitle">Vi er i gang med at lave din sandwich.<br>Den er klar til afhentning om ca. 30 min.</p>
         <div class="ord-num"><span id="ordNum">Ordrenr. #—</span></div>
         <div class="email-sent-card" id="emailSentCard" style="display:none;">
             <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -1025,9 +1025,9 @@
         const chips=[...document.querySelectorAll('.chip.on')].map(c=>c.textContent).join(', ');
         const note=document.getElementById('kurvNote')?.value?.trim();
         const email=document.getElementById('emailInput')?.value?.trim();
-        const timeLabel=selectedTime==='asap'?'Hurtigst muligt (~15 min)':selectedTime;
+        const timeLabel=selectedTime==='asap'?'Hurtigst muligt (~30 min)':selectedTime;
         const sub=document.getElementById('confSubtitle');
-        if(sub)sub.innerHTML=selectedTime==='asap'?'Vi er i gang med at lave din sandwich.<br>Den er klar til afhentning om ca. 15 min.':`Vi er i gang med at lave din sandwich.<br>Den er klar til afhentning kl. <strong>${selectedTime}</strong>.`;
+        if(sub)sub.innerHTML=selectedTime==='asap'?'Vi er i gang med at lave din sandwich.<br>Den er klar til afhentning om ca. 30 min.':`Vi er i gang med at lave din sandwich.<br>Den er klar til afhentning kl. <strong>${selectedTime}</strong>.`;
         const card=document.getElementById('emailSentCard');
         if(card){
             if(email&&email.includes('@')){card.style.display='block';document.getElementById('emailSentTo').textContent='Kvittering sendt til '+email;}
