@@ -13,8 +13,9 @@
         .carousel-slide{min-width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
         /* Linje 14, 15 og 16 i din CSS skal se sådan her ud */
         .s1{background: url('foto/Fasade.png') center/cover no-repeat; width: 100%; height: 100%; flex-shrink: 0;}
-        .s2{background: url('foto/træcafe.JPG') center/cover no-repeat; width: 100%; height: 100%; flex-shrink: 0;}
-        .s3{background: url('foto/Pesto.Kylling.png') center/cover no-repeat; width: 100%; height: 100%; flex-shrink: 0;}
+        .s2{background: url('foto/tunsanwich.JPG') center/cover no-repeat; width: 100%; height: 100%; flex-shrink: 0;}
+        .s3{background: url('foto/træcafe.JPG') center/cover no-repeat; width: 100%; height: 100%; flex-shrink: 0;}
+        .s4{background: url('foto/Pesto.Kylling.png') center/cover no-repeat; width: 100%; height: 100%; flex-shrink: 0;}
         .slide-label{color:rgba(250,246,240,.45);font-style:italic;font-size:.9rem;}
         .carousel-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(250,246,240,.18);border:1.5px solid rgba(250,246,240,.3);color:rgba(250,246,240,.85);width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;z-index:10;transition:background .18s;}
         .carousel-btn:hover{background:rgba(250,246,240,.32);}
@@ -411,6 +412,81 @@
             .sel-call-box{flex-direction:column;padding:28px 24px;text-align:center;}
             .sel-call-text p{max-width:100%;}
         }
+
+        .menu-gallery {
+            display: flex; /* Lægger elementerne ved siden af hinanden */
+            overflow-x: auto; /* Tillader horisontal scroll */
+            scroll-snap-type: x mandatory; /* Gør at billederne "snapper" på plads */
+            gap: 20px;
+            padding: 20px;
+            scrollbar-width: none; /* Skjuler scrollbar i Firefox */
+            -ms-overflow-style: none; /* Skjuler scrollbar i IE/Edge */
+        }
+
+        /* Skjuler scrollbar i Chrome, Safari og Opera */
+        .menu-gallery::-webkit-scrollbar {
+            display: none;
+        }
+
+        .gallery-item {
+            flex: 0 0 350px; /* Bestemmer bredden på hvert billede (juster de 350px efter behov) */
+            scroll-snap-align: center; /* Sørger for at billedet lander i midten når man scroller */
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 4 / 5; /* Gør dem lidt højere end de er brede, ser ofte godt ud til karruseller */
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Teksten i bunden (som på dit skærmbillede) */
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 20px;
+            backdrop-filter: blur(5px); /* Giver en lækker glas-effekt bag teksten */
+        }
+
+        .gallery-overlay h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.2rem;
+        }
+
+        .gallery-overlay p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .feat-img {
+            width: 100%; /* Eller den faste bredde du har i forvejen */
+            height: 300px; /* Juster højden så den passer til dit design */
+            overflow: hidden;
+            border-radius: 15px; /* Matcher din stil */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feat-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Det her er vigtigt – det beskærer billedet pænt */
+            transition: transform 0.3s ease;
+        }
+
+        .feat-img:hover img {
+            transform: scale(1.05); /* En lille lækker zoom-effekt når man holder musen over */
+        }
+
     </style>
 </head>
 <body>
@@ -434,14 +510,26 @@
             <div class="carousel-slide s1"><span class="slide-label"></span></div>
             <div class="carousel-slide s2"><span class="slide-label"></span></div>
             <div class="carousel-slide s3"><span class="slide-label"></span></div>
+            <div class="carousel-slide s4"><span class="slide-label"></span></div>
         </div>
         <button class="carousel-btn carousel-prev" onclick="carouselMove(-1)">&#8592;</button>
         <button class="carousel-btn carousel-next" onclick="carouselMove(1)">&#8594;</button>
         <div class="carousel-dots" id="carouselDots"></div>
     </div>    <div class="home-feature">
         <div class="home-grid">
-            <div><div class="feat-title">Cafeens anbefaling</div><div class="feat-img" onclick="go('menu')" style="cursor:pointer;" title="Se menuen">📷 Sandwich-billede</div></div>
-            <div><div class="feat-title">Favoritten</div><div class="feat-img" onclick="go('menu')" style="cursor:pointer;" title="Se menuen">📷 Sandwich-billede</div></div>
+            <div class="feat-item">
+                <div class="feat-title">Cafeens anbefaling</div>
+                <div class="feat-img" onclick="go('menu')" style="cursor:pointer;" title="Se menuen">
+                    <img src="foto/Pesto.Kylling.png" alt="Cafeens anbefaling">
+                </div>
+            </div>
+
+            <div class="feat-item">
+                <div class="feat-title">Favoritten</div>
+                <div class="feat-img" onclick="go('menu')" style="cursor:pointer;" title="Se menuen">
+                    <img src="foto/Kylling.Karry.jpg" alt="Favoritten">
+                </div>
+            </div>
             <div class="cta-col">
                 <button class="see-menu-btn" onclick="go('menu')">Se Menu</button>
                 <div class="cta-note" onclick="go('selskaber')" style="cursor:pointer;">Mad til begivenheder? Det klare vi også!<br><em>– Læs mere om selskaber</em></div>
@@ -570,9 +658,6 @@
     <div class="pay-layout">
         <div>
             <div class="form-sec">
-                <div class="lbl">Afhentning</div>
-                <div class="pickup-opt on" id="pu1" onclick="pickPU(1)"><div class="radio"><div class="rdot"></div></div><div class="pt"><strong>Afhent i cafeen</strong><span>Storgade 12</span></div></div>
-                <div class="pickup-opt" id="pu2" onclick="pickPU(2)"><div class="radio"><div class="rdot"></div></div><div class="pt"><strong>Spis her</strong><span>Vi finder et bord til dig</span></div></div>
                 <div class="time-picker-wrap">
                     <label>Hvornår skal det være klar?</label>
                     <button class="time-asap on" id="asapBtn" onclick="pickAsap()">Hurtigst muligt (~30 min)</button>
@@ -663,7 +748,6 @@
                 Ring til os: 12 34 56 78
             </button>
         </div>
-        <div class="sel-hero-img">📸 Selskabsbillede her</div>
     </div>
 
     <!-- TRUST STRIP -->
@@ -693,31 +777,55 @@
                 <h2>Hvad serverer vi?</h2>
                 <p>Vi tilbyder et bredt udvalg – tilpasset sæsonens råvarer</p>
             </div>
-            <div class="menu-cols">
-                <div>
-                    <div class="lbl">Sandwiches &amp; wraps</div>
-                    <div class="menu-cat">
-                        <div class="menu-item-row"><div><div class="mi-name">Skinke &amp; ost</div><div class="mi-desc">Lufttørret skinke, smeltet ost, dijonsennep</div></div><div class="mi-price">inkl.</div></div>
-                        <div class="menu-item-row"><div><div class="mi-name">Roastbeef bearnaise</div><div class="mi-desc">Tyndt skåret roastbeef, hjemmelavet bearnaise</div></div><div class="mi-price">inkl.</div></div>
-                        <div class="menu-item-row"><div><div class="mi-name">Tun mayo</div><div class="mi-desc">Hjemmelavet tunmousse, kapers, rødløg</div></div><div class="mi-price">inkl.</div></div>
-                        <div class="menu-item-row"><div><div class="mi-name">Mozzarella &amp; tomat</div><div class="mi-desc">Frisk mozzarella, basilikum, olivenolie</div></div><div class="mi-price">inkl.</div></div>
-                        <div class="menu-item-row"><div><div class="mi-name">Kylling caesar wrap</div><div class="mi-desc">Grillet kylling, parmesan, caesardressing</div></div><div class="mi-price">inkl.</div></div>
-                        <div class="menu-item-row"><div><div class="mi-name">Falafel &amp; hummus</div><div class="mi-desc">Sprøde falafel, hummus, agurk, tahini</div></div><div class="mi-price">inkl.</div></div>
+            <div class="menu-gallery">
+                <div class="gallery-item">
+                    <img src="foto/Kylling.Karry.jpg" alt="Skinke & ost">
+                    <div class="gallery-overlay">
+                        <h3>Skinke & ost</h3>
+                        <p>Lufttørret skinke, smeltet ost, dijonsennep</p>
                     </div>
-                    <div class="menu-note">Vi kan tilpasse menuen helt til jeres ønsker og allergier. Bare giv os besked – vi finder en løsning.</div>
                 </div>
-                <div>
-                    <div class="lbl">Tilbehør &amp; drikkevarer</div>
-                    <div class="menu-cat">
-                        <div class="menu-item-row"><div><div class="mi-name">Grøn salat</div><div class="mi-desc">Blandet salat, agurk, tomat, citrondressing</div></div><div class="mi-price">tillæg</div></div>
-                        <div class="menu-item-row"><div><div class="mi-name">Caesar salat</div><div class="mi-desc">Romaine, parmesan, croutoner, dressing</div></div><div class="mi-price">tillæg</div></div>
-                        <div class="menu-item-row"><div><div class="mi-name">Friskpresset juice</div><div class="mi-desc">Presset ved bestilling – appelsiner</div></div><div class="mi-price">tillæg</div></div>
-                        <div class="menu-item-row"><div><div class="mi-name">Kaffe &amp; te</div><div class="mi-desc">Nybrygget filterkaffe og udvalg af teer</div></div><div class="mi-price">tillæg</div></div>
-                        <div class="menu-item-row"><div><div class="mi-name">Sodavand &amp; vand</div><div class="mi-desc">Udvalg af dåsedrikke og kildevand</div></div><div class="mi-price">inkl.</div></div>
-                        <div class="menu-item-row"><div><div class="mi-name">Kage &amp; dessert</div><div class="mi-desc">Sæsonens hjemmebagte – spørg os</div></div><div class="mi-price">aftales</div></div>
+
+                <div class="gallery-item">
+                    <img src="foto/Kylling.Karry.jpg" alt="Kylling caesar">
+                    <div class="gallery-overlay">
+                        <h3>Kylling caesar wrap</h3>
+                        <p>Grillet kylling, parmesan, caesardressing</p>
                     </div>
-                    <div class="menu-note"><em>Har I behov for glutenfrie, veganske eller andre specialkoster? Vi tilbyder det til alle selskaber – uden ekstra besvær.</em></div>
                 </div>
+
+                <div class="gallery-item">
+                    <img src="foto/Kylling.Karry.jpg" alt="Kylling caesar">
+                    <div class="gallery-overlay">
+                        <h3>Kylling caesar wrap</h3>
+                        <p>Grillet kylling, parmesan, caesardressing</p>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <img src="foto/Kylling.Karry.jpg" alt="Kylling caesar">
+                    <div class="gallery-overlay">
+                        <h3>Kylling caesar wrap</h3>
+                        <p>Grillet kylling, parmesan, caesardressing</p>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <img src="foto/Kylling.Karry.jpg" alt="Kylling caesar">
+                    <div class="gallery-overlay">
+                        <h3>Kylling caesar wrap</h3>
+                        <p>Grillet kylling, parmesan, caesardressing</p>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <img src="foto/Kylling.Karry.jpg" alt="Kylling caesar">
+                    <div class="gallery-overlay">
+                        <h3>Kylling caesar wrap</h3>
+                        <p>Grillet kylling, parmesan, caesardressing</p>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -784,7 +892,7 @@
 
 <script>
 
-    let cur=0,total=3,timer;
+    let cur=0,total=4,timer;
     const track=document.getElementById('carouselTrack');
     const dotsEl=document.getElementById('carouselDots');
     for(let i=0;i<total;i++){const d=document.createElement('div');d.className='dot'+(i===0?' on':'');d.onclick=()=>carouselGo(i);dotsEl.appendChild(d);}
