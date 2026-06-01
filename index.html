@@ -7,6 +7,21 @@
     <title>Sandwich Cafeen – Web Prototype</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lora:ital,wght@0,400;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
     <style>
+
+        .carousel{position:relative;width:100%;height:440px;overflow:hidden;background:#5c2e0e;flex-shrink:0;}
+        .carousel-track{display:flex;height:100%;transition:transform .5s cubic-bezier(.4,0,.2,1);}
+        .carousel-slide{min-width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+        .s1{background:linear-gradient(140deg,#a05030 0%,#5c2e0e 55%,#7a3810 100%);}
+        .s2{background:linear-gradient(140deg,#7a3810 0%,#a05030 55%,#5c2e0e 100%);}
+        .s3{background:linear-gradient(140deg,#5c2e0e 0%,#7a3810 55%,#a05030 100%);}
+        .slide-label{color:rgba(250,246,240,.45);font-style:italic;font-size:.9rem;}
+        .carousel-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(250,246,240,.18);border:1.5px solid rgba(250,246,240,.3);color:rgba(250,246,240,.85);width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;z-index:10;transition:background .18s;}
+        .carousel-btn:hover{background:rgba(250,246,240,.32);}
+        .carousel-prev{left:20px;} .carousel-next{right:20px;}
+        .carousel-dots{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10;}
+        .dot{width:8px;height:8px;border-radius:50%;background:rgba(250,246,240,.35);cursor:pointer;transition:background .2s,transform .2s;}
+        .dot.on{background:rgba(250,246,240,.9);transform:scale(1.25);}
+
         :root{
             --br:#5c2e0e;--cr:#faf6f0;--cream:#f5ede0;
             --sand:#e8d5b7;--sdk:#c9b08a;
@@ -45,7 +60,6 @@
             background:var(--cream);border:1.5px solid var(--sdk);border-radius:30px;
             padding:8px 16px;width:230px;
         }
-
         .search-box svg{width:14px;height:14px;stroke:var(--mid);flex-shrink:0;}
         .search-box input{border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:.84rem;color:var(--dk);width:100%;outline:none;}
         .search-box input::placeholder{color:var(--sdk);}
@@ -112,13 +126,11 @@
         .tab{flex-shrink:0;padding:12px 22px;font-size:.88rem;font-weight:500;color:var(--mid);border-bottom:2.5px solid transparent;cursor:pointer;background:none;border-top:none;border-left:none;border-right:none;white-space:nowrap;transition:color .15s,border-color .15s;}
         .tab.on{color:var(--br);border-bottom-color:var(--br);}
         .menu-main{max-width:1140px;margin:0 auto;padding:36px 52px 80px;display:grid;grid-template-columns:200px 1fr;gap:48px;align-items:start;}
-        /* sidebar */
         .sb{position:sticky;top:90px;}
         .sb-lbl{font-size:.66rem;font-weight:500;letter-spacing:.8px;text-transform:uppercase;color:var(--sdk);margin-bottom:10px;padding:0 4px;}
         .sb-link{display:block;padding:8px 12px;border-radius:8px;font-size:.84rem;color:var(--mid);cursor:pointer;border-left:3px solid transparent;transition:background .12s;}
         .sb-link:hover{background:var(--sand);color:var(--br);}
         .sb-link.on{background:var(--cream);color:var(--br);border-left-color:var(--br);font-weight:500;}
-        /* items */
         .cat-panel{display:none;}.cat-panel.on{display:block;}
         .sec{margin-bottom:36px;}
         .items-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}@media(max-width:700px){.items-grid{grid-template-columns:1fr;}}
@@ -266,7 +278,6 @@
         .pickup-opt.on .rdot{display:block;}
         .pt strong{font-size:.86rem;font-weight:500;display:block;margin-bottom:1px;}
         .pt span{font-size:.72rem;color:var(--mid);}
-        /* time picker */
         .time-picker-wrap{margin-top:12px;background:var(--cream);border:1.5px solid var(--sand);border-radius:10px;padding:14px;}
         .time-picker-wrap label{display:block;font-size:.72rem;font-weight:500;color:var(--mid);margin-bottom:10px;}
         .time-slots{display:flex;flex-wrap:wrap;gap:7px;}
@@ -275,7 +286,6 @@
         .time-asap{width:100%;padding:8px;margin-bottom:10px;border:1.5px solid var(--sdk);border-radius:24px;font-size:.78rem;font-weight:500;color:var(--mid);background:none;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:center;transition:all .13s;}
         .time-asap.on{background:var(--br);border-color:var(--br);color:var(--cr);}
         .time-note{font-size:.67rem;color:var(--sdk);margin-top:8px;}
-        /* payment tabs */
         .pay-tabs{display:flex;gap:8px;margin-bottom:16px;}
         .pay-tab{flex:1;padding:10px 8px;border:1.5px solid var(--sdk);border-radius:8px;background:none;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:500;color:var(--mid);cursor:pointer;transition:all .13s;display:flex;align-items:center;justify-content:center;gap:5px;}
         .pay-tab svg{width:13px;height:13px;stroke:currentColor;fill:none;}
@@ -285,7 +295,6 @@
         .card-icons{position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;gap:3px;}
         .ci{width:26px;height:17px;border-radius:3px;border:1px solid var(--sand);display:flex;align-items:center;justify-content:center;font-size:.5rem;font-weight:700;background:var(--cr);}
         .ci.v{color:#1a1f71;}.ci.m{color:#eb001b;}
-        /* pay sidebar */
         .pay-sidebar{position:sticky;top:90px;}
         .pay-sum{background:var(--sand);border-radius:14px;padding:22px 20px;margin-bottom:16px;}
         .ps-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--br);margin-bottom:14px;}
@@ -319,6 +328,59 @@
         .home-btn{display:inline-block;padding:14px 36px;background:var(--dk);color:var(--cr);border:none;border-radius:40px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;transition:background .15s;}
         .home-btn:hover{background:var(--ac);}
 
+        /* ══════ SELSKABER ══════ */
+        .sel-hero{
+            background:linear-gradient(140deg,#7a3810 0%,var(--br) 50%,#a05030 100%);
+            padding:70px 52px 60px;display:flex;align-items:center;gap:60px;
+        }
+        .sel-hero-text{flex:1;}
+        .sel-eyebrow{font-size:.68rem;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;color:var(--sand);margin-bottom:12px;}
+        .sel-hero-text h1{font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;color:var(--cr);line-height:1.12;margin-bottom:16px;}
+        .sel-hero-text p{font-family:'Lora',serif;font-style:italic;color:rgba(250,246,240,.8);font-size:1rem;line-height:1.65;max-width:480px;margin-bottom:28px;}
+        .sel-cta{display:inline-flex;align-items:center;gap:8px;background:var(--cr);color:var(--br);font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;padding:14px 28px;border-radius:40px;cursor:pointer;border:none;transition:background .15s;}
+        .sel-cta:hover{background:var(--sand);}
+        .sel-cta svg{width:15px;height:15px;stroke:currentColor;fill:none;}
+        .sel-hero-img{width:320px;height:220px;flex-shrink:0;background:rgba(255,255,255,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;color:rgba(250,246,240,.4);font-style:italic;font-size:.85rem;border:1px solid rgba(255,255,255,.15);}
+
+        .trust-strip{background:var(--cream);border-bottom:1px solid var(--sand);padding:18px 52px;display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap;}
+        .trust-item{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--mid);}
+        .trust-item svg{width:17px;height:17px;stroke:var(--br);fill:none;}
+        .trust-item strong{color:var(--br);font-weight:500;}
+
+        .sel-section{padding:60px 52px;}
+        .sel-narrow{max-width:1140px;margin:0 auto;}
+        .sec-head{text-align:center;margin-bottom:40px;}
+        .sec-head h2{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--br);margin-bottom:8px;}
+        .sec-head p{font-family:'Lora',serif;font-style:italic;color:var(--mid);font-size:.9rem;}
+
+        /* selskab menu */
+        .sel-menu-section{background:var(--cream);border-top:2px solid var(--sand);border-bottom:2px solid var(--sand);}
+        .menu-cols{display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:1140px;margin:0 auto;}
+        .menu-cat h3{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--br);margin-bottom:12px;}
+        .menu-item-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:8px 0;border-bottom:.5px solid var(--sand);}
+        .menu-item-row:last-child{border-bottom:none;}
+        .mi-name{font-size:.84rem;font-weight:500;}
+        .mi-desc{font-size:.72rem;color:var(--mid);margin-top:1px;}
+        .mi-price{font-size:.78rem;font-weight:500;white-space:nowrap;color:var(--br);flex-shrink:0;}
+        .menu-note{background:var(--sand);border-radius:10px;padding:14px 16px;font-family:'Lora',serif;font-style:italic;font-size:.84rem;color:var(--mid);line-height:1.6;margin-top:16px;}
+
+        /* how it works */
+        .how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;max-width:1140px;margin:0 auto;}
+        .how-step{text-align:center;padding:24px 16px;}
+        .how-num{width:44px;height:44px;border-radius:50%;background:var(--br);color:var(--cr);font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;}
+        .how-step h3{font-size:.9rem;font-weight:500;color:var(--dk);margin-bottom:6px;}
+        .how-step p{font-size:.78rem;color:var(--mid);line-height:1.5;}
+
+        /* call to action box */
+        .sel-call-box{background:var(--dk);border-radius:16px;padding:40px 48px;display:flex;align-items:center;justify-content:space-between;gap:40px;max-width:1140px;margin:0 auto;}
+        .sel-call-text h2{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;color:var(--cr);margin-bottom:8px;}
+        .sel-call-text p{font-size:.88rem;color:rgba(250,246,240,.65);line-height:1.6;max-width:460px;}
+        .sel-call-right{flex-shrink:0;text-align:center;}
+        .sel-phone{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--cr);display:block;margin-bottom:6px;letter-spacing:.5px;}
+        .sel-hours{font-size:.74rem;color:var(--sdk);}
+        .sel-call-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:30px;padding:8px 16px;margin-top:12px;font-size:.74rem;color:rgba(250,246,240,.6);}
+        .sel-call-badge svg{width:13px;height:13px;stroke:var(--sdk);fill:none;}
+
         /* ── FOOTER ── */
         .site-footer{border-top:2px solid var(--sand);padding:24px 52px;display:flex;align-items:center;justify-content:space-between;font-size:.8rem;color:var(--mid);margin-top:auto;}
         .sf-logo{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:900;color:var(--br);}
@@ -339,6 +401,14 @@
             .home-grid,.home-foot{grid-template-columns:1fr;padding:28px 22px;}
             .hero{height:280px;}
             .site-footer{padding:18px 22px;flex-direction:column;gap:12px;}
+            .sel-hero{padding:44px 22px;flex-direction:column;gap:28px;}
+            .sel-hero-img{width:100%;}
+            .trust-strip{padding:14px 22px;gap:24px;}
+            .sel-section{padding:40px 22px;}
+            .menu-cols{grid-template-columns:1fr;}
+            .how-grid{grid-template-columns:1fr 1fr;}
+            .sel-call-box{flex-direction:column;padding:28px 24px;text-align:center;}
+            .sel-call-text p{max-width:100%;}
         }
     </style>
 </head>
@@ -350,6 +420,7 @@
         <span class="logo" onclick="go('home')">Sandwich Cafeen</span>
         <ul style="display:flex;gap:30px;list-style:none;">
             <li><a onclick="go('menu')" style="font-size:.9rem;color:var(--dk);text-decoration:underline;text-decoration-color:var(--br);cursor:pointer;">Menu</a></li>
+            <li><a onclick="go('selskaber')" style="font-size:.9rem;color:var(--dk);text-decoration:underline;text-decoration-color:var(--br);cursor:pointer;">Selskaber</a></li>
             <li><a style="font-size:.9rem;color:var(--dk);text-decoration:underline;text-decoration-color:var(--br);cursor:pointer;">Kontakt</a></li>
         </ul>
         <button class="cart-pill" onclick="openDrawer()">
@@ -358,14 +429,22 @@
             <span class="cart-badge" id="homeBadge">0</span>
         </button>
     </nav>
-    <div class="hero">📸 Cafe-billede her</div>
-    <div class="home-feature">
+    <div class="carousel" id="heroCarousel">
+        <div class="carousel-track" id="carouselTrack">
+            <div class="carousel-slide s1"><span class="slide-label">📸 Cafe-billede 1</span></div>
+            <div class="carousel-slide s2"><span class="slide-label">📸 Cafe-billede 2</span></div>
+            <div class="carousel-slide s3"><span class="slide-label">📸 Cafe-billede 3</span></div>
+        </div>
+        <button class="carousel-btn carousel-prev" onclick="carouselMove(-1)">&#8592;</button>
+        <button class="carousel-btn carousel-next" onclick="carouselMove(1)">&#8594;</button>
+        <div class="carousel-dots" id="carouselDots"></div>
+    </div>    <div class="home-feature">
         <div class="home-grid">
-            <div><div class="feat-title">Månedens nyhed</div><div class="feat-img" onclick="go('menu')" style="cursor:pointer;" title="Se menuen">📷 Sandwich-billede</div></div>
+            <div><div class="feat-title">Cafeens anbefaling</div><div class="feat-img" onclick="go('menu')" style="cursor:pointer;" title="Se menuen">📷 Sandwich-billede</div></div>
             <div><div class="feat-title">Favoritten</div><div class="feat-img" onclick="go('menu')" style="cursor:pointer;" title="Se menuen">📷 Sandwich-billede</div></div>
             <div class="cta-col">
                 <button class="see-menu-btn" onclick="go('menu')">Se Menu</button>
-                <div class="cta-note">Mad til begivenheder? Det klare vi også!<br><em>– Giv os et kald</em></div>
+                <div class="cta-note" onclick="go('selskaber')" style="cursor:pointer;">Mad til begivenheder? Det klare vi også!<br><em>– Læs mere om selskaber</em></div>
             </div>
         </div>
     </div>
@@ -490,7 +569,6 @@
     </div>
     <div class="pay-layout">
         <div>
-            <!-- PICKUP -->
             <div class="form-sec">
                 <div class="lbl">Afhentning</div>
                 <div class="pickup-opt on" id="pu1" onclick="pickPU(1)"><div class="radio"><div class="rdot"></div></div><div class="pt"><strong>Afhent i cafeen</strong><span>Storgade 12</span></div></div>
@@ -502,14 +580,12 @@
                     <p class="time-note">Åbent Man–Fre 10–18 · Lørdag 10–15</p>
                 </div>
             </div>
-            <!-- CONTACT -->
             <div class="form-sec">
                 <div class="lbl">Kontaktoplysninger</div>
                 <div class="field-row"><div class="field"><label>Fornavn</label><input type="text" placeholder="Anders"/></div><div class="field"><label>Efternavn</label><input type="text" placeholder="Jensen"/></div></div>
                 <div class="field"><label>Telefon</label><input type="tel" placeholder="+45 12 34 56 78"/></div>
                 <div class="field"><label>E-mail <span style="color:var(--ac);font-size:.65rem;">– kvittering sendes hertil</span></label><input type="email" id="emailInput" placeholder="din@email.dk"/></div>
             </div>
-            <!-- PAYMENT -->
             <div class="form-sec">
                 <div class="lbl">Betalingsmetode</div>
                 <div class="pay-tabs">
@@ -527,7 +603,6 @@
             </div>
             <button class="back-lnk" onclick="go('kurv')">← Tilbage til kurv</button>
         </div>
-        <!-- SIDEBAR SUMMARY -->
         <aside class="pay-sidebar">
             <div class="pay-sum">
                 <div class="ps-title">Din ordre</div>
@@ -564,7 +639,159 @@
     <footer class="site-footer"><span class="sf-logo">Sandwich Cafeen</span><span>Man–Fre 10–18 · Lørdag 10–15 · Søndag lukket</span><div class="sf-soc"><div class="sf-s"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></div><div class="sf-s"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="white" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5"/></svg></div></div></footer>
 </div>
 
+<!-- ════════ SCREEN: SELSKABER ════════ -->
+<div class="screen" id="s-selskaber">
+    <nav>
+        <div class="nav-left">
+            <button class="back-btn" onclick="go('home')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>Tilbage</button>
+            <span class="logo" onclick="go('home')">Sandwich Cafeen</span>
+        </div>
+        <ul style="display:flex;gap:30px;list-style:none;">
+            <li><a onclick="go('menu')" style="font-size:.9rem;color:var(--dk);text-decoration:underline;text-decoration-color:var(--br);cursor:pointer;">Menu</a></li>
+            <li><a style="font-size:.9rem;color:var(--br);font-weight:500;text-decoration:underline;text-decoration-color:var(--br);cursor:pointer;">Selskaber</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <div class="sel-hero">
+        <div class="sel-hero-text">
+            <div class="sel-eyebrow">Selskaber &amp; catering</div>
+            <h1>Mad til din<br>begivenhed</h1>
+            <p>Vi ordner frokosten, så du kan hygge dig med dine gæster. Fra 10 til 200 personer – vi skræddersyr til jer.</p>
+            <button class="sel-cta">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.18a20 20 0 01-3-8.59A2 2 0 012.22 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.9a16 16 0 006.1 6.1l1.27-.55a2 2 0 012.11.45c.907.339 1.85.573 2.81.7A2 2 0 0122 17.73v-.81z"/></svg>
+                Ring til os: 12 34 56 78
+            </button>
+        </div>
+        <div class="sel-hero-img">📸 Selskabsbillede her</div>
+    </div>
+
+    <!-- TRUST STRIP -->
+    <div class="trust-strip">
+        <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            <span>Fra <strong>10 til 200 gæster</strong></span>
+        </div>
+        <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>Bestil senest <strong>2 dage i forvejen</strong></span>
+        </div>
+        <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span><strong>Allergier</strong> tilgodeses altid</span>
+        </div>
+        <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span><strong>Levering</strong> eller afhentning</span>
+        </div>
+    </div>
+
+    <!-- MENU SECTION -->
+    <div class="sel-section sel-menu-section">
+        <div class="sel-narrow">
+            <div class="sec-head">
+                <h2>Hvad serverer vi?</h2>
+                <p>Vi tilbyder et bredt udvalg – tilpasset sæsonens råvarer</p>
+            </div>
+            <div class="menu-cols">
+                <div>
+                    <div class="lbl">Sandwiches &amp; wraps</div>
+                    <div class="menu-cat">
+                        <div class="menu-item-row"><div><div class="mi-name">Skinke &amp; ost</div><div class="mi-desc">Lufttørret skinke, smeltet ost, dijonsennep</div></div><div class="mi-price">inkl.</div></div>
+                        <div class="menu-item-row"><div><div class="mi-name">Roastbeef bearnaise</div><div class="mi-desc">Tyndt skåret roastbeef, hjemmelavet bearnaise</div></div><div class="mi-price">inkl.</div></div>
+                        <div class="menu-item-row"><div><div class="mi-name">Tun mayo</div><div class="mi-desc">Hjemmelavet tunmousse, kapers, rødløg</div></div><div class="mi-price">inkl.</div></div>
+                        <div class="menu-item-row"><div><div class="mi-name">Mozzarella &amp; tomat</div><div class="mi-desc">Frisk mozzarella, basilikum, olivenolie</div></div><div class="mi-price">inkl.</div></div>
+                        <div class="menu-item-row"><div><div class="mi-name">Kylling caesar wrap</div><div class="mi-desc">Grillet kylling, parmesan, caesardressing</div></div><div class="mi-price">inkl.</div></div>
+                        <div class="menu-item-row"><div><div class="mi-name">Falafel &amp; hummus</div><div class="mi-desc">Sprøde falafel, hummus, agurk, tahini</div></div><div class="mi-price">inkl.</div></div>
+                    </div>
+                    <div class="menu-note">Vi kan tilpasse menuen helt til jeres ønsker og allergier. Bare giv os besked – vi finder en løsning.</div>
+                </div>
+                <div>
+                    <div class="lbl">Tilbehør &amp; drikkevarer</div>
+                    <div class="menu-cat">
+                        <div class="menu-item-row"><div><div class="mi-name">Grøn salat</div><div class="mi-desc">Blandet salat, agurk, tomat, citrondressing</div></div><div class="mi-price">tillæg</div></div>
+                        <div class="menu-item-row"><div><div class="mi-name">Caesar salat</div><div class="mi-desc">Romaine, parmesan, croutoner, dressing</div></div><div class="mi-price">tillæg</div></div>
+                        <div class="menu-item-row"><div><div class="mi-name">Friskpresset juice</div><div class="mi-desc">Presset ved bestilling – appelsiner</div></div><div class="mi-price">tillæg</div></div>
+                        <div class="menu-item-row"><div><div class="mi-name">Kaffe &amp; te</div><div class="mi-desc">Nybrygget filterkaffe og udvalg af teer</div></div><div class="mi-price">tillæg</div></div>
+                        <div class="menu-item-row"><div><div class="mi-name">Sodavand &amp; vand</div><div class="mi-desc">Udvalg af dåsedrikke og kildevand</div></div><div class="mi-price">inkl.</div></div>
+                        <div class="menu-item-row"><div><div class="mi-name">Kage &amp; dessert</div><div class="mi-desc">Sæsonens hjemmebagte – spørg os</div></div><div class="mi-price">aftales</div></div>
+                    </div>
+                    <div class="menu-note"><em>Har I behov for glutenfrie, veganske eller andre specialkoster? Vi tilbyder det til alle selskaber – uden ekstra besvær.</em></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="sel-section">
+        <div class="sel-narrow">
+            <div class="sec-head">
+                <h2>Sådan foregår det</h2>
+                <p>Fire nemme trin fra idé til veltilredt bord</p>
+            </div>
+            <div class="how-grid">
+                <div class="how-step">
+                    <div class="how-num">1</div>
+                    <h3>Ring til os</h3>
+                    <p>Giv os et kald på 12 34 56 78. Vi tager en snak om jeres ønsker, dato og antal gæster.</p>
+                </div>
+                <div class="how-step">
+                    <div class="how-num">2</div>
+                    <h3>Vi laver et tilbud</h3>
+                    <p>Inden for 24 timer sender vi et skræddersyet tilbud direkte til jeres e-mail.</p>
+                </div>
+                <div class="how-step">
+                    <div class="how-num">3</div>
+                    <h3>Bekræft &amp; betal</h3>
+                    <p>Godkend tilbuddet og betal et lille depositum – resten betales ved levering.</p>
+                </div>
+                <div class="how-step">
+                    <div class="how-num">4</div>
+                    <h3>Nyd festen</h3>
+                    <p>Vi leverer til tiden, klar til servering. I slapser af og hygger jer.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CALL TO ACTION -->
+    <div class="sel-section" style="background:var(--cream);border-top:2px solid var(--sand);">
+        <div class="sel-call-box">
+            <div class="sel-call-text">
+                <h2>Klar til at booke jeres selskab?</h2>
+                <p>Vi hjælper jer med alt fra menu til levering. Ring til os i åbningstiden, og vi finder den perfekte løsning til jeres arrangement.</p>
+            </div>
+            <div class="sel-call-right">
+                <span class="sel-phone">12 34 56 78</span>
+                <div class="sel-hours">Man–Fre 10–18 · Lørdag 10–15</div>
+                <div class="sel-call-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.18a20 20 0 01-3-8.59A2 2 0 012.22 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.9a16 16 0 006.1 6.1l1.27-.55a2 2 0 012.11.45c.907.339 1.85.573 2.81.7A2 2 0 0122 17.73v-.81z"/></svg>
+                    Vi svarer hurtigt
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <span class="sf-logo">Sandwich Cafeen</span>
+        <span>Man–Fre 10–18 · Lørdag 10–15 · Søndag lukket</span>
+        <div class="sf-soc">
+            <div class="sf-s"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></div>
+            <div class="sf-s"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="white" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5"/></svg></div>
+        </div>
+    </footer>
+</div>
+
 <script>
+
+    let cur=0,total=3,timer;
+    const track=document.getElementById('carouselTrack');
+    const dotsEl=document.getElementById('carouselDots');
+    for(let i=0;i<total;i++){const d=document.createElement('div');d.className='dot'+(i===0?' on':'');d.onclick=()=>carouselGo(i);dotsEl.appendChild(d);}
+    function carouselGo(n){cur=(n+total)%total;track.style.transform=`translateX(-${cur*100}%)`;dotsEl.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));clearInterval(timer);timer=setInterval(()=>carouselMove(1),4500);}
+    function carouselMove(d){carouselGo(cur+d);}
+    timer=setInterval(()=>carouselMove(1),4500);
+
     const MENU=[
         {category:"Sandwiches",sections:[
                 {label:"Klassikere",items:[
@@ -573,10 +800,6 @@
                         {id:3,name:"Roastbeef bearnaise",desc:"Tyndt skåret roastbeef, hjemmelavet bearnaise og ristede løg",price:82,tags:["Bestseller"],allergens:"Gluten, mælk, æg, sennep"},
                         {id:4,name:"Mozzarella & tomat",desc:"Frisk mozzarella, solmodnede tomater, basilikum og olivenolie",price:74,tags:["Veg"],allergens:"Gluten, mælk",veg:true},
                     ]},
-                {label:"Månedens hit",items:[
-                        {id:5,name:"Kylling pesto",desc:"Grillet kylling, basilikumpesto, soltørret tomat og rucola på surdej",price:89,tags:["Nyhed"],allergens:"Gluten, nødder, mælk",isNew:true},
-                        {id:6,name:"Pulled pork",desc:"Langtidstilberedt pulled pork, coleslaw, jalapeño og BBQ-sauce",price:92,tags:["Populær"],allergens:"Gluten, sennep"},
-                    ]}
             ]},
         {category:"Wraps",sections:[{label:"Wraps",items:[
                     {id:7,name:"Kylling caesar",desc:"Grillet kylling, parmesan, caesardressing og romaine i spinatwrap",price:82,tags:["Bestseller"],allergens:"Gluten, mælk, æg, fisk"},
@@ -603,7 +826,6 @@
     let cart=[],activeCat=0,modalItem=null,modalQty=1,selectedBread=null,selectedTime='asap';
     let menuBuilt=false;
 
-    /* ── NAV ── */
     function go(id){
         document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
         document.getElementById('s-'+id).classList.add('active');
@@ -614,7 +836,6 @@
         if(id==='bekreft')renderConfirm();
     }
 
-    /* ── BADGES ── */
     function updateBadges(){
         const n=cart.reduce((s,c)=>s+c.qty,0);
         ['homeBadge','menuBadge','kurvBadge'].forEach(id=>{
@@ -625,7 +846,6 @@
         });
     }
 
-    /* ── DRAWER ── */
     function openDrawer(){
         renderDrawer();
         document.getElementById('cartDrawer').classList.add('open');
@@ -663,7 +883,6 @@
     function findItem(id){for(const c of MENU)for(const s of c.sections)for(const i of s.items)if(i.id===id)return i;}
     function addToCart(item,qty){const ex=cart.find(c=>c.id===item.id);if(ex)ex.qty+=qty;else cart.push({...item,qty});updateBadges();}
 
-    /* ── MENU ── */
     function buildMenu(){
         if(menuBuilt)return;menuBuilt=true;
         const tabRow=document.getElementById('tabRow');
@@ -710,7 +929,6 @@
     }
     function quickAdd(e,id){e.stopPropagation();addToCart(findItem(id),1);}
 
-    /* ── MODAL ── */
     function openModal(item){
         modalItem=item;modalQty=1;
         document.getElementById('mName').textContent=item.name;
@@ -730,7 +948,6 @@
     function mAdj(d){modalQty=Math.max(1,modalQty+d);document.getElementById('mQtyN').textContent=modalQty;document.getElementById('mAddBtn').textContent='Læg i kurv – '+(modalItem.price*modalQty)+' kr';}
     function confirmModal(){addToCart(modalItem,modalQty);closeModal(null,true);}
 
-    /* ── SEARCH ── */
     function filterItems(){
         const q=document.getElementById('searchInput').value.toLowerCase().trim();
         document.querySelectorAll('.cat-panel').forEach((p,i)=>p.classList.toggle('on',q?true:i===activeCat));
@@ -742,7 +959,6 @@
         });
     }
 
-    /* ── KURV ── */
     function renderKurv(){
         const qty=cart.reduce((s,c)=>s+c.qty,0);
         const total=cart.reduce((s,c)=>s+c.price*c.qty,0);
@@ -765,7 +981,6 @@
     function kRm(id){cart=cart.filter(c=>c.id!==id);updateBadges();renderKurv();}
     function pickBread(el,name){document.querySelectorAll('.bread-pill').forEach(p=>p.classList.remove('on'));el.classList.add('on');selectedBread=name;}
 
-    /* ── BETALING ── */
     function renderPaySum(){
         const rows=document.getElementById('paySumRows');rows.innerHTML='';
         cart.forEach(c=>{const r=document.createElement('div');r.className='ps-row';r.innerHTML=`<span>${c.qty}× ${c.name}</span><span>${c.price*c.qty} kr</span>`;rows.appendChild(r);});
@@ -785,7 +1000,6 @@
     function fmtCard(el){let v=el.value.replace(/\D/g,'').slice(0,16);el.value=v.match(/.{1,4}/g)?.join(' ')||v;}
     function fmtExp(el){let v=el.value.replace(/\D/g,'').slice(0,4);if(v.length>=2)v=v.slice(0,2)+' / '+v.slice(2);el.value=v;}
 
-    /* ── TIME ── */
     let timeSlotsBuilt=false;
     function buildTimeSlots(){
         if(timeSlotsBuilt)return;timeSlotsBuilt=true;
@@ -804,7 +1018,6 @@
     function pickAsap(){selectedTime='asap';document.getElementById('asapBtn').classList.add('on');document.querySelectorAll('.time-slot').forEach(b=>b.classList.remove('on'));if(document.getElementById('payTimeVal'))document.getElementById('payTimeVal').textContent='Hurtigst muligt';}
     function pickTime(btn,val){selectedTime=val;document.getElementById('asapBtn').classList.remove('on');document.querySelectorAll('.time-slot').forEach(b=>b.classList.remove('on'));btn.classList.add('on');if(document.getElementById('payTimeVal'))document.getElementById('payTimeVal').textContent=val;}
 
-    /* ── BEKRÆFTELSE ── */
     function renderConfirm(){
         const num=Math.floor(10000+Math.random()*90000);
         document.getElementById('ordNum').textContent='Ordrenr. #'+num;
@@ -813,16 +1026,13 @@
         const note=document.getElementById('kurvNote')?.value?.trim();
         const email=document.getElementById('emailInput')?.value?.trim();
         const timeLabel=selectedTime==='asap'?'Hurtigst muligt (~15 min)':selectedTime;
-        // subtitle
         const sub=document.getElementById('confSubtitle');
         if(sub)sub.innerHTML=selectedTime==='asap'?'Vi er i gang med at lave din sandwich.<br>Den er klar til afhentning om ca. 15 min.':`Vi er i gang med at lave din sandwich.<br>Den er klar til afhentning kl. <strong>${selectedTime}</strong>.`;
-        // email card
         const card=document.getElementById('emailSentCard');
         if(card){
             if(email&&email.includes('@')){card.style.display='block';document.getElementById('emailSentTo').textContent='Kvittering sendt til '+email;}
             else card.style.display='none';
         }
-        // receipt
         let html=cart.map(c=>`<div class="cc-row"><span>${c.qty}× ${c.name}</span><span>${c.price*c.qty} kr</span></div>`).join('');
         html+=`<div class="cc-row" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--sdk)"><span><strong>Total</strong></span><span><strong>${total} kr</strong></span></div>`;
         html+=`<div class="cc-row"><span>Afhentning</span><span>${timeLabel}</span></div>`;
