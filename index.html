@@ -147,8 +147,60 @@
             transition:border-color .2s,transform .15s,box-shadow .2s;
         }
         .item-card:hover{border-color:var(--sdk);transform:translateY(-2px);box-shadow:0 6px 20px rgba(92,46,14,.1);}
-        .ic-thumb{width:110px;flex-shrink:0;background:var(--sand);display:flex;align-items:center;justify-content:center;}
-        .ic-thumb svg{width:36px;height:36px;stroke:var(--sdk);fill:none;}
+        /* 1. Kortet skal have en fast højde */
+        .item-card {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: stretch !important;
+            padding: 0 !important;
+            height: 120px !important;    /* Vi gør den lidt lavere for at fremhæve det aflange */
+            min-height: 120px !important;
+            overflow: hidden !important;
+        }
+
+        /* 2. BILLEDET: Dette SKAL gøre det aflangt nu */
+        .ic-thumb {
+            width: 200px !important;     /* Bredden */
+            min-width: 200px !important;
+            height: 100% !important;     /* Højden følger kortet (120px) */
+            flex-shrink: 0 !important;
+        }
+
+        .ic-thumb img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+        }
+
+        /* 3. TEKSTEN: Vi låser den til kun 1 linje med "..." */
+        .ic-body {
+            padding: 10px 15px !important;
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important; /* Låser top og bund */
+            overflow: hidden !important;
+        }
+
+        .ic-desc {
+            font-size: 0.75rem !important;
+            color: var(--mid);
+            margin: 2px 0 !important;
+
+            /* TVINGES til 1 linje med prikker */
+            display: -webkit-box !important;
+            -webkit-line-clamp: 1 !important;
+            -webkit-box-orient: vertical !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            white-space: normal !important;
+        }
+
+        /* 4. PRISEN: Sidder "spot on" i bunden */
+        .ic-foot {
+            margin-top: auto !important;
+            flex-shrink: 0 !important;
+        }        .ic-thumb svg{width:36px;height:36px;stroke:var(--sdk);fill:none;}
         .ic-body{padding:12px 14px;flex:1;display:flex;flex-direction:column;min-width:0;}
         .ic-top{display:flex;justify-content:space-between;gap:8px;margin-bottom:3px;}
         .ic-name{font-size:.88rem;font-weight:500;}
@@ -522,6 +574,16 @@
                 padding: 6px 12px; /* Gør kurv-knappen mindre og fiks */
             }
         }
+
+        .ic-thumb {
+            width: 110px;
+            flex-shrink: 0;
+            background: var(--sand);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden; /* TILFØJ DENNE LINJE */
+        }
     </style>
 </head>
 <body>
@@ -536,6 +598,11 @@
             <li><a onclick="go('selskaber')" class="nav-link">Selskaber</a></li>
         </ul>
             <button class="cart-pill" onclick="openDrawer()">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
                 Kurv
                 <span class="cart-badge" id="homeBadge">0</span>
             </button>
@@ -562,7 +629,7 @@
             <div class="feat-item">
                 <div class="feat-title">Favoritten</div>
                 <div class="feat-img" onclick="go('menu')" style="cursor:pointer;" title="Se menuen">
-                    <img src="foto/Kylling.Karry.jpg" alt="Favoritten">
+                    <img src="foto/Kylling.Karry.JPG" alt="Favoritten">
                 </div>
             </div>
             <div class="cta-col">
@@ -613,8 +680,13 @@
 <div class="modal-ov" id="modalOv" onclick="closeModal(event)">
     <div class="modal-box">
         <button class="modal-close" onclick="closeModal(null,true)">✕</button>
-        <div class="modal-img"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round"><path d="M3 6h18M3 12h18M8 18h8"/></svg></div>
-        <div class="modal-body">
+        <div class="modal-img">
+            <img id="mImg" src="" alt="" style="width:100%; height:100%; object-fit:cover; display:none;">
+
+            <svg id="mIcon" viewBox="0 0 24 24" stroke-width="1.5">
+                <path d="M3 6h18M3 12h18M3 18h18"/>
+            </svg>
+        </div>        <div class="modal-body">
             <div class="modal-name" id="mName"></div>
             <div class="modal-desc" id="mDesc"></div>
             <div class="modal-alg" id="mAlg"></div>
@@ -813,7 +885,7 @@
             </div>
             <div class="menu-gallery">
                 <div class="gallery-item">
-                    <img src="foto/Kylling.Karry.jpg" alt="Skinke & ost">
+                    <img src="foto/Kylling.Karry.JPG" alt="Skinke & ost">
                     <div class="gallery-overlay">
                         <h3>Skinke & ost</h3>
                         <p>Lufttørret skinke, smeltet ost, dijonsennep</p>
@@ -821,7 +893,7 @@
                 </div>
 
                 <div class="gallery-item">
-                    <img src="foto/Kylling.Karry.jpg" alt="Kylling caesar">
+                    <img src="foto/Kylling.Karry.JPG" alt="Kylling caesar">
                     <div class="gallery-overlay">
                         <h3>Kylling caesar wrap</h3>
                         <p>Grillet kylling, parmesan, caesardressing</p>
@@ -829,7 +901,7 @@
                 </div>
 
                 <div class="gallery-item">
-                    <img src="foto/Kylling.Karry.jpg" alt="Kylling caesar">
+                    <img src="foto/Kylling.Karry.JPG" alt="Kylling caesar">
                     <div class="gallery-overlay">
                         <h3>Kylling caesar wrap</h3>
                         <p>Grillet kylling, parmesan, caesardressing</p>
@@ -837,7 +909,7 @@
                 </div>
 
                 <div class="gallery-item">
-                    <img src="foto/Kylling.Karry.jpg" alt="Kylling caesar">
+                    <img src="foto/Kylling.Karry.JPG" alt="Kylling caesar">
                     <div class="gallery-overlay">
                         <h3>Kylling caesar wrap</h3>
                         <p>Grillet kylling, parmesan, caesardressing</p>
@@ -845,7 +917,7 @@
                 </div>
 
                 <div class="gallery-item">
-                    <img src="foto/Kylling.Karry.jpg" alt="Kylling caesar">
+                    <img src="foto/Kylling.Karry.JPG" alt="Kylling caesar">
                     <div class="gallery-overlay">
                         <h3>Kylling caesar wrap</h3>
                         <p>Grillet kylling, parmesan, caesardressing</p>
@@ -853,7 +925,7 @@
                 </div>
 
                 <div class="gallery-item">
-                    <img src="foto/Kylling.Karry.jpg" alt="Kylling caesar">
+                    <img src="foto/Kylling.Karry.JPG" alt="Kylling caesar">
                     <div class="gallery-overlay">
                         <h3>Kylling caesar wrap</h3>
                         <p>Grillet kylling, parmesan, caesardressing</p>
@@ -937,30 +1009,56 @@
     const MENU=[
         {category:"Sandwiches",sections:[
                 {label:"Klassikere",items:[
-                        {id:1,name:"Skinke & ost",desc:"Lufttørret skinke, smeltet ost, dijonsennep, frisk salat og tomat",price:69,tags:["Populær"],allergens:"Gluten, mælk, sennep"},
-                        {id:2,name:"Tun mayo",desc:"Hjemmelavet tunmousse, kapers, rødløg og tomat",price:72,tags:["Klassiker"],allergens:"Fisk, æg, gluten"},
-                        {id:3,name:"Roastbeef bearnaise",desc:"Tyndt skåret roastbeef, hjemmelavet bearnaise og ristede løg",price:82,tags:["Bestseller"],allergens:"Gluten, mælk, æg, sennep"},
-                        {id:4,name:"Mozzarella & tomat",desc:"Frisk mozzarella, solmodnede tomater, basilikum og olivenolie",price:74,tags:["Veg"],allergens:"Gluten, mælk",veg:true},
+                        {id:1,name:"Kylling m. karry og bacon",desc:"Kylling, Karry, Bacon, frisk salat og tomat",price:73, img:"foto/Kylling.Karry.PNG", tags:["Favoritten"],allergens:"Gluten, tomat"},
+                        {id:2,name:"Tunsalat m. bacon",desc:"Tunsalat, syltede agurker, bacon, frisk salat og tomat",price:73, img:"foto/Tunsandwich.JPG", tags:["Populær"],allergens:"Gluten, tomat"},
+                        {id:3,name:"Laks m. philadelphiacreme",desc:"Koldrøget laks, philadelphiacreme, agurk, rødløg, lucernespirer, frisk salat og tomat",price:73, img:"foto/Laks med phil.JPG", tags:["Populær"],allergens:"Gluten, rødløg, tomat"},
+                        {id:4,name:"Texmex m. krydret kylling, salsa og nachos",desc:"Krydret kylling, salsa, nachos, frisk salat og tomat",price:73, img:"foto/TexMex.JPG", tags:["Populær"],allergens:"Gluten, tomat"},
+                        {id:5,name:"Serranoskinke m. pesto",desc:"Ristet serranoskinke, syltede agurker, pinjekerner, grøn pesto, frisk salat og tomat",price:73, img:"foto/Serrano.JPG", tags:["Populær"],allergens:"Gluten, tomat"},
+                        {id:6,name:"Frikadelle m. rødkål",desc:"Frikadelle, syltede agurker, rødkål, frisk salat og tomat",price:73, img:"foto/Frikadelle.JPG", tags:["Populær"],allergens:"Gluten, tomat"},
+                        {id:7,name:"Roastbeef m. sennepsdressing",desc:"Roastbeef, Sennepsdressing, gulerødder, syltede agurker, rødløg, frisk salat og tomat",price:73, img:"foto/Roastbeef.JPG",allergens:"Gluten, Sennep, rødløg, tomat"},
+                        {id:8,name:"Æg og rejer",desc:"Æg, rejer, agurk, lucernespirer, frisk salat og tomat",price:73, img:"foto/Æg.JPG", tags:["Populær"],allergens:"Gluten, rejer, tomat"},
+                        {id:9,name:"Kylling m. pesto og mozzarella",desc:"Kylling, pesto, mozzarella, frisk salat og tomat",price:73, img:"foto/Kylling.Pesto.JPG", tags:["Populær"],allergens:"Gluten, tomat"},
+                        {id:10,name:"Kalkun m. guacamole og bacon",desc:"Kalkun, guacamole, rød peber, majs, bacon og frisk salat",price:73, img:"foto/Kalkun.Guaca.JPG", tags:["Populær"],allergens:"Gluten"},
+                        {id:11,name:"Skinke og ost",desc:"Skinke, ost, agurk, rød peber og frisk salat",price:73, img:"foto/SkinkeOst.JPG", tags:["Populær"],allergens:"Gluten"},
+                        {id:12,name:"Æg m. tomat og bacon",desc:"Æg, agurk, bacon, frisk salat og tomat",price:73, img:"foto/Æg.JPG", tags:["Populær"],allergens:"Gluten, tomat"},
+                        {id:13,name:"Kalkun m. ost og bacon",desc:"Kalkun, ost, bacon, agurk, frisk salat og tomat",price:73, img:"foto/KalkunBacon.JPG", tags:["Populær"],allergens:"Gluten, ost, tomat"},
+                        {id:14,name:"Laks m. cremefraiche dressing",desc:"Laks, cremefraichedressing, agurk, rødløg, lucernespirer, frisk salat og tomat",price:73, img:"foto/LaksDressing.JPG", tags:["Populær"],allergens:"Gluten, rødløg, tomat"},
+                        {id:15,name:"Vegansk m. grøntsagsbøf",desc:"Grøntsagsbøf, hummus, syltede rødløg, sweet chili, frisk salat og tomat",price:73, img:"foto/Grøntsagsbøf.JPG", tags:["Populær"],allergens:"Gluten, rødløg, tomat"},
+                        {id:16,name:"Kalkun m. ærtepesto og syltede rødløg",desc:"Kalkun, ærtepesto, syltede rødløg, frisk salat og tomat",price:73, img:"foto/Ærtepesto.JPG", tags:["Populær"],allergens:"Gluten, rødløg, tomat"},
+                        {id:17,name:"Vegetar m. mozzarella",desc:"Mozzarella, grøn pesto, pinjekerner, frisk salat og tomat",price:73, img:"foto/VegetarMozzarella.JPG", tags:["Populær"],allergens:"Gluten, tomat"},
+                        {id:18,name:"Kylling m. philadelphiacreme",desc:"Kylling, philadelphiacreme, agurk, bacon, frisk salat og tomat",price:73, img:"foto/KyllingPhil.JPG", tags:["Populær"],allergens:"Gluten, tomat"},
+                        {id:19,name:"Laksesalat",desc:"Laksemousse, agurk, lucernespirer, frisk salat og tomat",price:73, img:"foto/Laksesalat.JPG", tags:["Populær"],allergens:"Gluten, tomat"},
+                        {id:20,name:"Vegetar m. marinerede kartofler",desc:"Marinerede kartofler, soltørrede tomater, pinjekerner, lucernespirer, frisk salat og tomat",price:73, img:"foto/Kartofler.JPG", tags:["Populær"],allergens:"Gluten, tomat"},
+                        {id:21,name:"Roasbeef bearnaise m. bagte løg",desc:"Roastbeef, bearnaise, bagte løg, syltede agurker og frisk salat",price:73, img:"foto/Roastbeef.JPG", tags:["Populær"],allergens:"Gluten, løg"},
+                        {id:22,name:"Vegansk nobeef, bearnaise m. bagte løg",desc:"Vegansk nobeef, bearnaise, bagte løg, syltede agurker og frisk salat",price:73, img:"foto/Nobeef.JPG", tags:["Populær"],allergens:"Gluten, løg"},
+
                     ]},
             ]},
         {category:"Wraps",sections:[{label:"Wraps",items:[
-                    {id:7,name:"Kylling caesar",desc:"Grillet kylling, parmesan, caesardressing og romaine i spinatwrap",price:82,tags:["Bestseller"],allergens:"Gluten, mælk, æg, fisk"},
-                    {id:8,name:"Falafel & hummus",desc:"Sprøde falafel, hummus, agurk, tomat og tahini",price:79,tags:["Veg"],allergens:"Gluten, sesam",veg:true},
-                    {id:9,name:"Rejer & avokado",desc:"Friske rejer, avokado og citronmayonnaise",price:89,tags:["Populær"],allergens:"Gluten, skaldyr, æg"},
+                    {id:23,name:"Fuldkornswrap m. laks og creme cheese",desc:"Laks, philadelphiacreme, agurk og rødløg",price:53,tags:["Populær"],allergens:"Gluten, rødløg"},
+                    {id:24,name:"Fuldkornswrap m. kylling og creme cheese",desc:"Kylling, philadelphiacreme, soltørret tomat, rød peber",price:53,tags:["Favoritten"],allergens:"Gluten, sesam",veg:true},
                 ]}]},
         {category:"Salater",sections:[{label:"Salater",items:[
-                    {id:10,name:"Grøn salat",desc:"Blandet salat, agurk, tomat, rødløg og citrondressing",price:69,tags:["Veg"],allergens:"Ingen",veg:true},
-                    {id:11,name:"Caesar salat",desc:"Romaine, parmesan, croutoner, kylling og caesardressing",price:82,tags:["Klassiker"],allergens:"Gluten, mælk, æg, fisk"},
+                    {id:25,name:"Grov salat",desc:"Broccoli, squash, bønner, broccolistok, rødbede, gulerødder og spæd salat",price:73,tags:["Veg"],allergens:"Ingen",veg:true},
+                    {id:26,name:"Pastasalat",desc:"Pasta, ærter, rød peber, majs",price:73,tags:["Klassiker"],allergens:"Gluten"},
+                    {id:27,name:"std. salat",desc:"Icebergsalat, tomat, agurk, majs, ærter, ananas, gulerod, rødkål.",price:73,tags:["Klassiker"],allergens:"Ananas"},
+
                 ]}]},
         {category:"Drikkevarer",sections:[
                 {label:"Kolde drikke",items:[
-                        {id:12,name:"Sodavand (dåse)",desc:"Coca-Cola, Fanta, Sprite eller Pepsi",price:22,tags:[],allergens:"Ingen"},
-                        {id:13,name:"Vand (0,5 L)",desc:"Kildevand – stille eller med brus",price:18,tags:[],allergens:"Ingen"},
-                        {id:14,name:"Friskpresset juice",desc:"Appelsiner presset ved bestilling",price:38,tags:["Populær"],allergens:"Ingen"},
+                        {id:28,name:"Milkshake",desc:"Banan, chokolade, espresso/karamel, jordbær, karamel, oreo, vanilje",price:22,tags:[],allergens:"Ingen"},
+                        {id:28,name:"Sodavand 1/2 liter",desc:"Coca-Cola, Faxe Kondi,Faxe kondi Appelsin (0. kcal), Faxe kondi Free eller Pepsi Max",price:22,tags:[],allergens:"Ingen"},
+                        {id:28,name:"hjemmelavet smoothie",desc:"Coca-Cola, Faxe Kondi,Faxe kondi Appelsin (0. kcal), Faxe kondi Free eller Pepsi Max",price:22,tags:[],allergens:"Ingen"},
+                        {id:29,name:"Kildevand (0,5 L)",desc:"Kildevand – stille",price:18,tags:[],allergens:"Ingen"},
+                        {id:29,name:"Egekilde (0,5 L)",desc:"Kildevand – stille eler med brus",price:18,tags:[],allergens:"Ingen"},
+                        {id:28,name:"Saft",desc:"Coca-Cola, Faxe Kondi,Faxe kondi Appelsin (0. kcal), Faxe kondi Free eller Pepsi Max",price:22,tags:[],allergens:"Ingen"},
+                        {id:29,name:"Fuze Tea (0,5 L)",desc:"Kildevand – stille eler med brus",price:18,tags:[],allergens:"Ingen"},
+
+                        {id:30,name:"Friskpresset juice",desc:"Appelsiner presset ved bestilling",price:38,tags:["Populær"],allergens:"Ingen"},
                     ]},
                 {label:"Varme drikke",items:[
-                        {id:15,name:"Kaffe",desc:"Nybrygget filterkaffe",price:28,tags:[],allergens:"Ingen"},
-                        {id:16,name:"Latte",desc:"Espresso og dampet mælk – stor kop",price:38,tags:[],allergens:"Mælk"},
+                        {id:31,name:"Kaffe",desc:"Nybrygget filterkaffe",price:28,tags:[],allergens:"Ingen"},
+                        {id:32,name:"Latte",desc:"Espresso og dampet mælk – stor kop",price:38,tags:[],allergens:"Mælk"},
                     ]}
             ]},
     ];
@@ -1016,15 +1114,43 @@
             cont.appendChild(r);
         });
     }
-    function dAdj(id,d){
-        const it=cart.find(c=>c.id===id);if(!it)return;
-        it.qty+=d;if(it.qty<=0)cart=cart.filter(c=>c.id!==id);
-        updateBadges();renderDrawer();
+    function dAdj(id, d) {
+        const it = cart.find(c => c.id === id);
+        if (!it) return;
+
+        if (d > 0) {
+            const currentTotal = cart.reduce((sum, c) => sum + c.qty, 0);
+            if (currentTotal >= 9) {
+                alert("Maksimum 9 varer pr. online bestilling.");
+                return;
+            }
+        }
+
+        it.qty += d;
+        if (it.qty <= 0) {
+            cart = cart.filter(c => c.id !== id);
+        }
+        updateBadges();
+        renderDrawer();
     }
 
     function findItem(id){for(const c of MENU)for(const s of c.sections)for(const i of s.items)if(i.id===id)return i;}
-    function addToCart(item,qty){const ex=cart.find(c=>c.id===item.id);if(ex)ex.qty+=qty;else cart.push({...item,qty});updateBadges();}
+    function addToCart(item, qty) {
+        const currentTotal = cart.reduce((sum, c) => sum + c.qty, 0);
 
+        if (currentTotal + qty > 9) {
+            alert("Du kan maks bestille 9 varer online. Ring venligst for større bestillinger.");
+            return;
+        }
+
+        const ex = cart.find(c => c.id === item.id);
+        if (ex) {
+            ex.qty += qty;
+        } else {
+            cart.push({...item, qty});
+        }
+        updateBadges();
+    }
     function buildMenu(){
         if(menuBuilt)return;menuBuilt=true;
         const tabRow=document.getElementById('tabRow');
@@ -1061,27 +1187,72 @@
             cont.appendChild(panel);
         });
     }
-    function buildCard(item){
-        const el=document.createElement('div');el.className='item-card';el.onclick=()=>openModal(item);
-        const tgs=(item.tags||[]).map(t=>{let c='tag';if(t==='Nyhed'||item.isNew)c+=' new';if(t==='Veg'||item.veg)c+=' veg';return`<span class="${c}">${t}</span>`;}).join('');
-        el.innerHTML=`<div class="ic-thumb"><svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round"><path d="M3 6h18M3 12h18M8 18h8"/></svg></div>
-    <div class="ic-body"><div class="ic-top"><div class="ic-name">${item.name}</div><div class="ic-price">${item.price} kr</div></div><div class="ic-desc">${item.desc}</div>
-    <div class="ic-foot"><div class="tags">${tgs}</div><button class="add-btn" onclick="quickAdd(event,${item.id})"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></div></div>`;
+    function buildCard(item) {
+        const el = document.createElement('div');
+        el.className = 'item-card';
+        el.onclick = () => openModal(item);
+
+        const tgs = (item.tags || []).map(t => {
+            let c = 'tag';
+            if (t === 'Nyhed') c += ' new';
+            if (t === 'Veg') c += ' veg';
+            return `<span class="${c}">${t}</span>`;
+        }).join('');
+
+        // Her indsætter vi billedet. Vi bruger 'foto/img.png' som backup, hvis i.img mangler.
+        el.innerHTML = `
+        <div class="ic-thumb">
+            <img src="${item.img || 'foto/img.png'}" alt="${item.name}" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+        <div class="ic-body">
+            <div class="ic-top">
+                <div class="ic-name">${item.name}</div>
+                <div class="ic-price">${item.price} kr</div>
+            </div>
+            <div class="ic-desc">${item.desc || ''}</div>
+            <div class="ic-foot">
+                <div class="tags">${tgs}</div>
+                <button class="add-btn" onclick="quickAdd(event, ${item.id})">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>`;
         return el;
     }
     function quickAdd(e,id){e.stopPropagation();addToCart(findItem(id),1);}
 
     function openModal(item){
-        modalItem=item;modalQty=1;
-        document.getElementById('mName').textContent=item.name;
-        document.getElementById('mDesc').textContent=item.desc;
-        document.getElementById('mAlg').textContent='Allergener: '+item.allergens;
-        document.getElementById('mPrice').textContent=item.price+' kr';
-        document.getElementById('mQtyN').textContent='1';
-        document.getElementById('mAddBtn').textContent='Læg i kurv – '+item.price+' kr';
+        modalItem = item;
+        modalQty = 1;
+
+        // Udfylder tekstfelter
+        document.getElementById('mName').textContent = item.name;
+        document.getElementById('mDesc').textContent = item.desc;
+        document.getElementById('mAlg').textContent = 'Allergener: ' + (item.allergens || 'Ingen');
+        document.getElementById('mPrice').textContent = item.price + ' kr';
+        document.getElementById('mQtyN').textContent = '1';
+        document.getElementById('mAddBtn').textContent = 'Læg i kurv - ' + item.price + ' kr';
+
+        // NY BILLED-LOGIK:
+        const imgEl = document.getElementById('mImg');
+        const iconEl = document.getElementById('mIcon');
+
+        if (item.img) {
+            imgEl.src = item.img;           // Sætter billedstien fra MENU arrayet
+            imgEl.style.display = 'block';  // Viser billedet
+            if(iconEl) iconEl.style.display = 'none'; // Skjuler ikonet
+        } else {
+            imgEl.style.display = 'none';   // Skjuler billede hvis det mangler
+            if(iconEl) iconEl.style.display = 'block'; // Viser ikon som backup
+        }
+
         document.getElementById('modalOv').classList.add('open');
-        document.body.style.overflow='hidden';
+        document.body.style.overflow = 'hidden';
     }
+
     function closeModal(e,force){
         if(force||(e&&e.target===document.getElementById('modalOv'))){
             document.getElementById('modalOv').classList.remove('open');document.body.style.overflow='';
@@ -1119,7 +1290,24 @@
             rows.appendChild(d);
         });
     }
-    function kAdj(id,d){const it=cart.find(c=>c.id===id);if(!it)return;it.qty+=d;if(it.qty<=0)cart=cart.filter(c=>c.id!==id);updateBadges();renderKurv();}
+    function kAdj(id, d) {
+        const it = cart.find(c => c.id === id);
+        if (!it) return;
+
+        // Tjek for maks 9 hvis man trykker på plus (d er 1)
+        if (d > 0) {
+            const currentTotal = cart.reduce((sum, c) => sum + c.qty, 0);
+            if (currentTotal >= 9) {
+                alert("Maksimum 9 varer pr. online bestilling.");
+                return;
+            }
+        }
+
+        it.qty += d;
+        if (it.qty <= 0) cart = cart.filter(c => c.id !== id);
+        updateBadges();
+        renderKurv(); // Vigtigt: denne opdaterer den store visning
+    }
     function kRm(id){cart=cart.filter(c=>c.id!==id);updateBadges();renderKurv();}
     function pickBread(el,name){document.querySelectorAll('.bread-pill').forEach(p=>p.classList.remove('on'));el.classList.add('on');selectedBread=name;}
 
