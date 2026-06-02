@@ -56,8 +56,12 @@
         }
         .back-btn:hover{background:var(--sand);color:var(--br);}
         .back-btn svg{width:15px;height:15px;stroke:currentColor;}
-        .nav-right{display:flex;align-items:center;gap:14px;}
-        .search-box{
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-left: auto; /* DETTE er tricket, der skubber alt til højre */
+        }        .search-box{
             display:flex;align-items:center;gap:8px;
             background:var(--cream);border:1.5px solid var(--sdk);border-radius:30px;
             padding:8px 16px;width:230px;
@@ -487,6 +491,37 @@
             transform: scale(1.05); /* En lille lækker zoom-effekt når man holder musen over */
         }
 
+
+        @media (max-width: 768px) {
+            nav {
+                flex-wrap: wrap; /* Tillader elementer at hoppe ned på næste linje */
+                padding: 10px 20px; /* Mindre padding på mobil */
+                justify-content: center; /* Centrerer indholdet når det pakkes */
+                gap: 10px;
+            }
+
+            .logo {
+                flex: 0 0 100%; /* Gør logoet bredt så det får sin egen linje */
+                text-align: center;
+                margin-bottom: 5px;
+                font-size: 1.4rem; /* Lidt mindre tekst på mobil */
+            }
+
+            .nav-right {
+                width: 100%; /* Sørger for at menu + kurv fylder bredden ud */
+                justify-content: center; /* Centrerer dem under logoet */
+                margin-left: 0; /* Fjerner auto-margin fra desktop */
+                gap: 15px;
+            }
+
+            .nav-link {
+                font-size: 0.85rem; /* Gør teksten lidt mindre så der er plads */
+            }
+
+            .cart-pill {
+                padding: 6px 12px; /* Gør kurv-knappen mindre og fiks */
+            }
+        }
     </style>
 </head>
 <body>
@@ -495,16 +530,16 @@
 <div class="screen active" id="s-home">
     <nav>
         <span class="logo" onclick="go('home')">Sandwich Cafeen</span>
-        <ul style="display:flex;gap:30px;list-style:none;">
-            <li><a onclick="go('menu')" style="font-size:.9rem;color:var(--dk);text-decoration:underline;text-decoration-color:var(--br);cursor:pointer;">Menu</a></li>
-            <li><a onclick="go('selskaber')" style="font-size:.9rem;color:var(--dk);text-decoration:underline;text-decoration-color:var(--br);cursor:pointer;">Selskaber</a></li>
+
+        <div class="nav-right"> <ul style="display:flex; gap:30px; list-style:none; margin:0; padding:10px;">
+            <li><a onclick="go('menu')" class="nav-link">Menu</a></li>
+            <li><a onclick="go('selskaber')" class="nav-link">Selskaber</a></li>
         </ul>
-        <button class="cart-pill" onclick="openDrawer()">
-            <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6" stroke="white" stroke-width="2" fill="none"/><path d="M16 10a4 4 0 01-8 0" fill="none" stroke="white" stroke-width="2"/></svg>
-            Kurv
-            <span class="cart-badge" id="homeBadge">0</span>
-        </button>
-    </nav>
+            <button class="cart-pill" onclick="openDrawer()">
+                Kurv
+                <span class="cart-badge" id="homeBadge">0</span>
+            </button>
+        </div> </nav>
     <div class="carousel" id="heroCarousel">
         <div class="carousel-track" id="carouselTrack">
             <div class="carousel-slide s1"><span class="slide-label"></span></div>
@@ -532,7 +567,7 @@
             </div>
             <div class="cta-col">
                 <button class="see-menu-btn" onclick="go('menu')">Se Menu</button>
-                <div class="cta-note" onclick="go('selskaber')" style="cursor:pointer;">Mad til begivenheder? Det klare vi også!<br><em>– Læs mere om selskaber</em></div>
+                <div class="cta-note" onclick="go('selskaber')" style="cursor:pointer;">Mad til begivenheder? Det klarer vi også!<br><em>– Læs mere om selskaber</em></div>
             </div>
         </div>
     </div>
