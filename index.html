@@ -125,6 +125,9 @@
             cursor: pointer; background: none; border-style: solid;
             transition: background .15s, color .15s; font-family: 'DM Sans', sans-serif;
         }
+        .nav-link { color: var(--dk); background: none; }
+        .nav-link:hover { color: var(--br); }
+
         .back-btn:hover { background: var(--sand); color: var(--br); }
         .back-btn svg { width: 15px; height: 15px; stroke: currentColor; }
         .nav-right { display: flex; align-items: center; gap: 16px; margin-left: auto; }
@@ -2987,7 +2990,7 @@
         document.getElementById('payMoms').textContent = moms + ' kr';
         document.getElementById('payNowAmt').textContent = total + ' kr';
         document.getElementById('payTimeVal').textContent = cafeClosedToday
-            ? (currentLang === 'da' ? 'Lukket i dag' : 'Closed today')
+            ? (currentLang === 'da' ? 'Lukket' : 'Closed')
             : (selectedTime === 'asap' ? (currentLang === 'da' ? 'Hurtigst muligt' : 'As soon as possible') : selectedTime);
     }
 
