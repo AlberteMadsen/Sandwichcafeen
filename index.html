@@ -10,7 +10,7 @@
     ════════════════════════════════════════ -->
     <meta name="robots" content="noindex, nofollow">
     <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
 
     <title>Sandwich Cafeen Køge – Friske sandwiches, wraps & salater</title>
     <!-- Preload det første karrusel-billede (LCP-kandidat) så det begynder at
@@ -57,7 +57,7 @@
         .carousel { position: relative; width: 100%; height: 440px; overflow: hidden; background: #5c2e0e; flex-shrink: 0; }
         .carousel-track { display: flex; height: 100%; transition: transform .5s cubic-bezier(.4,0,.2,1); }
         .carousel-slide { min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .s1 { background: url('foto/Fasade.png') center/cover no-repeat; width: 100%; height: 100%; flex-shrink: 0; }
+        .s1 { background: url('foto/Fasade.JPG') center/cover no-repeat; width: 100%; height: 100%; flex-shrink: 0; }
         .s2 { background: url('foto/Selskaber.JPG') center/cover no-repeat; width: 100%; height: 100%; flex-shrink: 0; }
         .s3 { background: url('foto/træcafe.JPG') center/cover no-repeat; width: 100%; height: 100%; flex-shrink: 0; }
         .s4 { background: url('foto/Drikke.JPG') center/cover no-repeat; width: 100%; height: 100%; flex-shrink: 0; }
@@ -110,7 +110,14 @@
             isolation: isolate; transform: translateZ(0);
         }
         .nav-left { display: flex; align-items: center; gap: 24px; }
-        .logo { font-family: 'Playfair Display', serif; font-size: 1.65rem; font-weight: 900; color: var(--br); cursor: pointer; text-decoration: none; background: none; border: none; }
+        .logo {
+            font-family: 'Playfair Display', serif; font-size: 1.65rem; font-weight: 900;
+            color: var(--br); cursor: pointer; text-decoration: none; background: none; border: none;
+            min-width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
         .back-btn {
             display: flex; align-items: center; gap: 5px;
             font-size: .84rem; font-weight: 500; color: var(--mid);
@@ -220,10 +227,24 @@
         .mobile-search input { border: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: .84rem; color: var(--dk); width: 100%; outline: none; }
         .mobile-search input::placeholder { color: var(--sdk); }
         @media (max-width: 768px) { .mobile-search { display: flex; } }
+        .tab-row-wrap { position: relative; }
+        .tab-row-wrap::after {
+            content: '';
+            position: absolute; top: 0; right: 0; bottom: 0;
+            width: 40px;
+            background: linear-gradient(to right, rgba(245,237,224,0), var(--cream) 78%);
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity .25s ease;
+        }
+        .tab-row-wrap.at-end::after { opacity: 0; }
         .tab-row { display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
         .tab-row::-webkit-scrollbar { display: none; }
         .tab { flex-shrink: 0; padding: 12px 22px; font-size: .88rem; font-weight: 500; color: var(--mid); border-bottom: 2.5px solid transparent; cursor: pointer; background: none; border-top: none; border-left: none; border-right: none; white-space: nowrap; transition: color .15s, border-color .15s; }
         .tab.on { color: var(--br); border-bottom-color: var(--br); }
+        @media (max-width: 480px) {
+            .tab { padding: 12px 14px; font-size: .82rem; }
+        }
         .menu-main { width: 100%; max-width: 1140px; margin: 0 auto; padding: 36px 52px 80px; display: grid; grid-template-columns: minmax(0,1fr); gap: 48px; align-items: start; }
         .cat-panel { display: none; }
         .cat-panel.on { display: block; }
@@ -327,16 +348,17 @@
         .drawer-ov { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.3); z-index: 300; }
         .drawer-ov.open { display: block; }
         .drawer {
-            position: fixed; top: 0; right: -420px; width: 400px; height: 100vh;
+            position: fixed; top: 0; right: -420px; width: 400px; max-width: 100vw;
+            height: 100vh; height: 100dvh;
             background: var(--cr); border-left: 2px solid var(--sand); z-index: 301;
             display: flex; flex-direction: column; transition: right .3s ease;
         }
         .drawer.open { right: 0; }
-        .drawer-head { display: flex; align-items: center; justify-content: space-between; padding: 22px 24px; border-bottom: 1px solid var(--sand); }
+        .drawer-head { display: flex; align-items: center; justify-content: space-between; padding: 22px 24px; border-bottom: 1px solid var(--sand); flex-shrink: 0; }
         .drawer-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--br); }
         .drawer-close { width: 32px; height: 32px; border-radius: 50%; background: var(--sand); border: none; cursor: pointer; font-size: .9rem; color: var(--dk); display: flex; align-items: center; justify-content: center; transition: background .12s; }
         .drawer-close:hover { background: var(--sdk); }
-        .drawer-items { flex: 1; overflow-y: auto; padding: 16px 24px; }
+        .drawer-items { flex: 1; min-height: 0; overflow-y: auto; padding: 16px 24px; }
         .drawer-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 12px; color: var(--mid); font-size: .88rem; font-style: italic; }
         .d-row { display: flex; align-items: center; gap: 10px; padding: 11px 0; border-bottom: .5px solid var(--sand); }
         .d-row:last-child { border-bottom: none; }
@@ -346,7 +368,7 @@
         .dq-btn { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--sdk); background: none; cursor: pointer; font-size: .9rem; color: var(--br); display: flex; align-items: center; justify-content: center; transition: background .1s; }
         .dq-btn:hover { background: var(--sand); }
         .d-price { font-size: .84rem; font-weight: 500; min-width: 50px; text-align: right; }
-        .drawer-foot { padding: 18px 24px; border-top: 1px solid var(--sand); }
+        .drawer-foot { padding: 18px 24px; padding-bottom: calc(18px + env(safe-area-inset-bottom)); border-top: 1px solid var(--sand); flex-shrink: 0; }
         .drawer-total { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
         .drawer-total span:first-child { font-size: .84rem; color: var(--mid); }
         .drawer-total span:last-child { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; color: var(--br); }
@@ -643,9 +665,28 @@
         /* ══════════════════════════════════════════
            BILLEDGALLERI – selskaber-siden
         ══════════════════════════════════════════ */
+        .gallery-wrap { position: relative; }
+        .gallery-wrap::after {
+            content: '';
+            position: absolute; top: 0; right: 0; bottom: 0;
+            width: 64px;
+            background: linear-gradient(to right, rgba(245,237,224,0), var(--cream) 82%);
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity .25s ease;
+        }
+        .gallery-wrap.at-end::after { opacity: 0; }
+        .gallery-dots { display: flex; justify-content: center; align-items: center; gap: 6px; margin: 2px 0 4px; }
+        .gdot { width: 6px; height: 6px; border-radius: 50%; background: var(--sdk); transition: background .2s, transform .2s; flex-shrink: 0; }
+        .gdot.on { background: var(--br); transform: scale(1.4); }
         .menu-gallery { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 20px; padding: 20px; scrollbar-width: none; -ms-overflow-style: none; }
         .menu-gallery::-webkit-scrollbar { display: none; }
         .gallery-item { flex: 0 0 350px; scroll-snap-align: center; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/5; }
+        @media (max-width: 640px) {
+            .gallery-item { flex: 0 0 80%; max-width: 300px; }
+            .menu-gallery { gap: 14px; padding: 16px 18px 20px; }
+            .gallery-wrap::after { width: 44px; }
+        }
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
         .gallery-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,.6); color: white; padding: 22px 20px; backdrop-filter: blur(5px); }
         .gallery-overlay h3 { margin: 0 0 8px 0; font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; letter-spacing: .2px; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -686,15 +727,14 @@
             .sel-call-text p { max-width: 100%; }
         }
         @media (max-width: 768px) {
-            nav { flex-wrap: wrap; padding: 10px 16px; justify-content: space-between; gap: 8px; }
+            nav { flex-wrap: wrap; padding: 10px 16px; justify-content: center; gap: 8px; }
             nav > .logo { flex: 0 0 100%; text-align: center; font-size: 1.3rem; margin-bottom: 4px; }
-            .nav-right { width: 100%; justify-content: center; margin-left: 0; gap: 10px; }
+            .nav-right { width: 100%; justify-content: center; margin-left: 0; gap: 10px; flex-wrap: wrap; }
             .cart-pill { padding: 8px 14px; }
             .search-box { display: none; }
-            .nav-left { flex: 1; min-width: 0; gap: 8px; }
-            .nav-left .logo { flex: none; font-size: 1.05rem; }
-            .back-btn { white-space: nowrap; padding: 5px 10px; font-size: .76rem; }
-            .nav-left ~ .nav-right { width: auto; flex-shrink: 0; }
+            .nav-left { width: 100%; justify-content: center; gap: 8px; }
+            .nav-left .logo { font-size: 1.05rem; }
+            .back-btn { white-space: nowrap; padding: 5px 10px; font-size: .76rem; flex-shrink: 0; }
         }
         @media (max-width: 420px) {
             .carousel { height: 180px; }
@@ -793,6 +833,19 @@
             white-space: pre-line;
             margin-top: 18px;
         }
+        .sb-heading {
+            font-family: 'DM Sans', sans-serif;
+            font-size: .7rem; font-weight: 700; letter-spacing: .6px; text-transform: uppercase;
+            color: var(--sdk);
+            margin: 20px 0 6px;
+        }
+        .sb-heading:first-child { margin-top: 0; }
+        .sb-note { font-size: .82rem; color: var(--mid); line-height: 1.65; margin-top: 18px; white-space: pre-line; }
+        .sb-para { margin: 0 0 12px; font-size: .86rem; line-height: 1.65; color: var(--mid); }
+        .sb-item-list { list-style: none; margin: 8px 0 14px; padding: 0; }
+        .sb-item-list li { padding: 7px 0; border-bottom: 1px solid var(--sand); font-size: .86rem; color: var(--dk); font-weight: 600; }
+        .sb-item-list li:last-child { border-bottom: none; }
+        .sb-price-tag { display: inline-block; margin: 4px 0 18px; padding: 8px 16px; background: var(--sand); border-radius: 20px; font-weight: 700; color: var(--br); font-size: .92rem; }
 
         .close-btn {
             position: absolute;
@@ -922,20 +975,20 @@
         <section class="home-feature" data-i18n-aria="featured_dishes" aria-label="Udvalgte retter">
             <div class="home-grid">
                 <div class="feat-item">
-                    <button class="feat-img" onclick="go('menu')" aria-labelledby="rec-label rec-desc">
-                        <img src="foto/Pesto.Kylling.png" data-i18n-alt="rec_img_alt" alt="Pesto kylling sandwich – cafeens anbefaling" loading="lazy" decoding="async">
+                    <button class="feat-img" onclick="go('menu')" aria-labelledby="fav-label fav-desc">
+                        <img src="foto/Kylling.Karry.JPG" data-i18n-alt="fav_img_alt" alt="Kylling karry sandwich" loading="lazy" decoding="async">
                         <div class="feat-overlay">
-                            <h3 id="rec-label" data-i18n="rec_title">Cafeens anbefaling</h3>
-                            <p id="rec-desc"><span data-i18n="rec_desc">Kylling, pesto, mozzarella, frisk salat og tomat</span> <span class="read-more" aria-hidden="true" data-i18n="read_more">Se i menuen</span></p>
+                            <h3 id="fav-label" data-i18n="fav_title">Sandwich</h3>
+                            <p id="fav-desc"><span class="read-more" data-i18n="read_more">Se i menuen</span></p>
                         </div>
                     </button>
                 </div>
                 <div class="feat-item">
-                    <button class="feat-img" onclick="go('menu')" aria-labelledby="fav-label fav-desc">
-                        <img src="foto/Kylling.Karry.JPG" data-i18n-alt="fav_img_alt" alt="Kylling karry sandwich – favoritten" loading="lazy" decoding="async">
+                    <button class="feat-img" onclick="go('menu'); switchCat(2);" aria-labelledby="rec-label rec-desc">
+                        <img src="foto/GrovSalat.JPG" data-i18n-alt="rec_img_alt" alt="Grov salat" loading="lazy" decoding="async">
                         <div class="feat-overlay">
-                            <h3 id="fav-label" data-i18n="fav_title">Favoritten</h3>
-                            <p id="fav-desc"><span data-i18n="fav_desc">Kylling, Karry, Bacon, frisk salat og tomat</span> <span class="read-more" aria-hidden="true" data-i18n="read_more">Se i menuen</span></p>
+                            <h3 id="rec-label" data-i18n="rec_title">Salater</h3>
+                            <p id="rec-desc"><span class="read-more" data-i18n="read_more">Se i menuen</span></p>
                         </div>
                     </button>
                 </div>
@@ -957,13 +1010,13 @@
                         4600 Køge
                     </a><br>
                     <span data-i18n="tel_prefix">Tlf:</span> <a href="tel:+4556650428" style="color:inherit;">56 65 04 28</a><br>
-                    <span data-i18n="mail_prefix">Mail:</span> <a href="mailto:info@sandwichcafeen.dk" style="color:inherit;">info@sandwichcafeen.dk</a><br>
-                    CVR: 26515858
+                    <span data-i18n="mail_prefix">Mail:</span> <a href="mailto:kontakt@sandwich-cafeen.dk" style="color:inherit;">kontakt@sandwich-cafeen.dk</a><br>
+                    CVR: 46392671
                 </address>
             </div>
             <div class="hf-h">
                 <h3 data-i18n="hours_title">Åbningstider</h3>
-                <p><b data-i18n="hours_weekday">Man–Fre</b> <span data-i18n="hours_weekday_time">10–18</span><br><b data-i18n="hours_saturday">Lørdag</b> <span data-i18n="hours_saturday_time">10–15</span><br><b data-i18n="hours_sunday">Søndag</b> <span data-i18n="closed">Lukket</span></p>
+                <p><b data-i18n="hours_weekday">Man–Fre</b> <span data-i18n="hours_weekday_time">10–18</span><br><b data-i18n="hours_saturday">Lørdag</b> <span data-i18n="hours_saturday_time">10–15</span><br><b data-i18n="hours_sunday">Søndag</b> <span data-i18n="closed">Lukket</span><br><b data-i18n="hours_holidays">Helligdage</b> <span data-i18n="closed">Lukket</span></p>
             </div>
             <div class="socials" data-i18n-aria="follow_us" aria-label="Følg os på sociale medier">
                 <a class="soc" href="https://www.facebook.com/sandwichcafeen/?locale=da_DK" target="_blank" rel="noopener noreferrer" data-i18n-aria="facebook" aria-label="Følg os på Facebook">
@@ -1029,7 +1082,9 @@
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <input type="text" id="searchInputMobile" data-i18n-placeholder="search_placeholder" placeholder="Søg på menuen…" oninput="filterItemsMobile(this.value)" autocomplete="off"/>
         </div>
-        <div class="tab-row" id="tabRow" role="tablist" data-i18n-aria="menu_categories" aria-label="Menukategorier"></div>
+        <div class="tab-row-wrap" id="tabRowWrap">
+            <div class="tab-row" id="tabRow" role="tablist" data-i18n-aria="menu_categories" aria-label="Menukategorier"></div>
+        </div>
     </header>
 
     <div class="menu-main wrap">
@@ -1038,10 +1093,13 @@
 
     <footer class="site-footer" role="contentinfo">
         <span class="sf-logo">Sandwich Cafeen</span>
-        <span data-i18n="footer_hours">Man–Fre 10–18 · Lørdag 10–15 · Søndag lukket</span>
+        <span data-i18n="footer_hours">Man–Fre 10–18 · Lørdag 10–15 · Søndag & helligdage lukket</span>
         <div class="sf-soc">
             <a class="sf-s" href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" data-i18n-aria="facebook" aria-label="Følg os på Facebook">
                 <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+            </a>
+            <a class="sf-s" href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" data-i18n-aria="instagram" aria-label="Følg os på Instagram">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="white" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5"/></svg>
             </a>
         </div>
     </footer>
@@ -1175,7 +1233,7 @@
 
     <footer class="site-footer" role="contentinfo">
         <span class="sf-logo">Sandwich Cafeen</span>
-        <span data-i18n="footer_hours">Man–Fre 10–18 · Lørdag 10–15 · Søndag lukket</span>
+        <span data-i18n="footer_hours">Man–Fre 10–18 · Lørdag 10–15 · Søndag & helligdage lukket</span>
     </footer>
 </div><!-- /s-kurv -->
 
@@ -1301,7 +1359,7 @@
 
     <footer class="site-footer" role="contentinfo">
         <span class="sf-logo">Sandwich Cafeen</span>
-        <span data-i18n="footer_hours">Man–Fre 10–18 · Lørdag 10–15 · Søndag lukket</span>
+        <span data-i18n="footer_hours">Man–Fre 10–18 · Lørdag 10–15 · Søndag & helligdage lukket</span>
     </footer>
 </div><!-- /s-betaling -->
 
@@ -1569,7 +1627,7 @@
 
     <footer class="site-footer" role="contentinfo">
         <span class="sf-logo">Sandwich Cafeen</span>
-        <span data-i18n="footer_hours">Man–Fre 10–18 · Lørdag 10–15 · Søndag lukket</span>
+        <span data-i18n="footer_hours">Man–Fre 10–18 · Lørdag 10–15 · Søndag & helligdage lukket</span>
         <div class="sf-soc">
             <a class="sf-s" href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" data-i18n-aria="facebook" aria-label="Følg os på Facebook">
                 <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
@@ -1595,8 +1653,8 @@
             </button>
             <button class="logo" onclick="go('home')">Sandwich Cafeen</button>
         </div>
-        <div style="display:flex;align-items:center;gap:24px;">
-            <ul style="display:flex;gap:30px;list-style:none;">
+        <div class="nav-right" style="gap:24px;">
+            <ul style="display:flex;gap:18px;list-style:none;">
                 <li>
                     <button onclick="go('menu')" style="font-size:.9rem;color:var(--dk);text-decoration:underline;text-decoration-color:var(--br);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;" data-i18n="nav_menu">
                         Menu
@@ -1651,41 +1709,44 @@
                     <p data-i18n="what_we_serve_sub">Vi tilbyder et bredt udvalg af smagfulde retter ud over vores lækre sandwich– tilpasset sæsonens råvarer</p>
                 </div>
 
-                <div class="menu-gallery" role="list" data-i18n-aria="menu_examples" aria-label="Eksempler fra menuen">
+                <div class="gallery-wrap" id="galleryWrap">
+                    <div class="menu-gallery" id="menuGallery" role="list" data-i18n-aria="menu_examples" aria-label="Eksempler fra menuen">
 
-                    <div class="gallery-item" role="listitem" onclick="openGalleryModal('tapas')">
-                        <img src="foto/Tapas.JPG" data-i18n-alt="gallery_tapas_alt" alt="Tapas anrettet med charcuteri, oste og tilbehør" loading="lazy" decoding="async">
-                        <div class="gallery-overlay" aria-hidden="true">
-                            <h3 data-i18n="gallery_tapas_title">Tapas</h3>
-                            <p><span data-i18n="gallery_tapas_teaser">3 charcuteri, 2 oste, 1-2 specialiteter...</span> <span class="read-more" data-i18n="read_more_2">Læs mere</span></p>
+                        <div class="gallery-item" role="listitem" onclick="openGalleryModal('tapas')">
+                            <img src="foto/Tapas.JPG" data-i18n-alt="gallery_tapas_alt" alt="Tapas anrettet med charcuteri, oste og tilbehør" loading="lazy" decoding="async">
+                            <div class="gallery-overlay" aria-hidden="true">
+                                <h3 data-i18n="gallery_tapas_title">Tapas</h3>
+                                <p><span data-i18n="gallery_tapas_teaser">3 charcuteri, 2 oste, 1-2 specialiteter...</span> <span class="read-more" data-i18n="read_more_2">Læs mere</span></p>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="gallery-item" role="listitem" onclick="openGalleryModal('smorrebrod')">
-                        <img src="foto/Smørrebrød.JPG" data-i18n-alt="gallery_smorrebrod_alt" alt="Smørebrød anrettet på et fad med klassisk dansk pålæg" loading="lazy" decoding="async">
-                        <div class="gallery-overlay" aria-hidden="true">
-                            <h3 data-i18n="gallery_smorrebrod_title">Smørebrød</h3>
-                            <p><span data-i18n="gallery_smorrebrod_teaser">Fiskefilet, roastbeef, frikadelle...</span> <span class="read-more" data-i18n="read_more_2">Læs mere</span></p>
+                        <div class="gallery-item" role="listitem" onclick="openGalleryModal('smorrebrod')">
+                            <img src="foto/Smørrebrød.JPG" data-i18n-alt="gallery_smorrebrod_alt" alt="Smørebrød anrettet på et fad med klassisk dansk pålæg" loading="lazy" decoding="async">
+                            <div class="gallery-overlay" aria-hidden="true">
+                                <h3 data-i18n="gallery_smorrebrod_title">Smørebrød</h3>
+                                <p><span data-i18n="gallery_smorrebrod_teaser">Fiskefilet, roastbeef, frikadelle...</span> <span class="read-more" data-i18n="read_more_2">Læs mere</span></p>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="gallery-item" role="listitem" onclick="openGalleryModal('minimad')">
-                        <img src="foto/Minimad.JPG" data-i18n-alt="gallery_minimad_alt" alt="Minimad – ostekurve, bruschetta og rispapirruller anrettet" loading="lazy" decoding="async">
-                        <div class="gallery-overlay" aria-hidden="true">
-                            <h3 data-i18n="gallery_minimad_title">Minimad</h3>
-                            <p><span data-i18n="gallery_minimad_teaser">Ostekurve, bruschetta, rispapirruller...</span> <span class="read-more" data-i18n="read_more_2">Læs mere</span></p>
+                        <div class="gallery-item" role="listitem" onclick="openGalleryModal('minimad')">
+                            <img src="foto/Minimad.JPG" data-i18n-alt="gallery_minimad_alt" alt="Minimad – ostekurve, bruschetta og rispapirruller anrettet" loading="lazy" decoding="async">
+                            <div class="gallery-overlay" aria-hidden="true">
+                                <h3 data-i18n="gallery_minimad_title">Minimad</h3>
+                                <p><span data-i18n="gallery_minimad_teaser">Ostekurve, bruschetta, rispapirruller...</span> <span class="read-more" data-i18n="read_more_2">Læs mere</span></p>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="gallery-item" role="listitem" onclick="openGalleryModal('minisandwich')">
-                        <img src="foto/Minisandwich.JPG" data-i18n-alt="gallery_minisandwich_alt" alt="Minisandwich og trekantsandwich anrettet på et bræt" loading="lazy" decoding="async">
-                        <div class="gallery-overlay" aria-hidden="true">
-                            <h3 data-i18n="gallery_minisandwich_title">Minisandwich/trekantsandwich</h3>
-                            <p><span data-i18n="gallery_minisandwich_teaser">Den go'e gamle klassiker trekantsandwichen...</span><span class="read-more" data-i18n="read_more_2">Læs mere</span></p>
+                        <div class="gallery-item" role="listitem" onclick="openGalleryModal('minisandwich')">
+                            <img src="foto/Minisandwich.JPG" data-i18n-alt="gallery_minisandwich_alt" alt="Minisandwich og trekantsandwich anrettet på et bræt" loading="lazy" decoding="async">
+                            <div class="gallery-overlay" aria-hidden="true">
+                                <h3 data-i18n="gallery_minisandwich_title">Minisandwich/trekantsandwich</h3>
+                                <p><span data-i18n="gallery_minisandwich_teaser">Den go'e gamle klassiker trekantsandwichen...</span><span class="read-more" data-i18n="read_more_2">Læs mere</span></p>
+                            </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
+                <div class="gallery-dots" id="galleryDots" aria-hidden="true"></div>
             </div>
         </section>
 
@@ -1709,7 +1770,7 @@
 
     <footer class="site-footer" role="contentinfo">
         <span class="sf-logo">Sandwich Cafeen</span>
-        <span data-i18n="footer_hours">Man–Fre 10–18 · Lørdag 10–15 · Søndag lukket</span>
+        <span data-i18n="footer_hours">Man–Fre 10–18 · Lørdag 10–15 · Søndag & helligdage lukket</span>
         <div class="sf-soc">
             <a class="sf-s" href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" data-i18n-aria="facebook" aria-label="Følg os på Facebook">
                 <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
@@ -1783,24 +1844,24 @@
             choose: "Vælg", prev_image: "Forrige billede", next_image: "Næste billede", choose_image: "Vælg billede",
             slide_facade: "Cafeens facade", slide_tuna: "Tunsandwich", slide_interior: "Cafeens indre", slide_pesto: "Pesto kylling sandwich",
             featured_dishes: "Udvalgte retter",
-            rec_title: "Cafeens anbefaling", rec_desc: "Kylling, pesto, mozzarella, frisk salat og tomat",
-            rec_img_alt: "Pesto kylling sandwich – cafeens anbefaling",
-            fav_title: "Favoritten", fav_desc: "Kylling, Karry, Bacon, frisk salat og tomat",
-            fav_img_alt: "Kylling karry sandwich – favoritten",
+            rec_title: "Salater", rec_desc: "Broccoli, squash, bønner, rødbede og gulerødder",
+            rec_img_alt: "Grov salat",
+            fav_title: "Sandwich", fav_desc: "Kylling, Karry, Bacon, frisk salat og tomat",
+            fav_img_alt: "Kylling karry sandwich",
             read_more: "Se i menuen", read_more_2: "Læs mere",
             see_menu: "Se Menu",
             cta_note_1: "Mad til begivenheder? Det klarer vi også!", cta_note_2: "– Læs mere om selskaber",
             contact_hours: "Kontakt og åbningstider",
             contact: "Kontakt", tel_prefix: "Tlf:", mail_prefix: "Mail:",
             hours_title: "Åbningstider", hours_weekday: "Man–Fre", hours_weekday_time: "10–18",
-            hours_saturday: "Lørdag", hours_saturday_time: "10–15", hours_sunday: "Søndag", closed: "Lukket",
+            hours_saturday: "Lørdag", hours_saturday_time: "10–15", hours_sunday: "Søndag", closed: "Lukket", hours_holidays: "Helligdage",
             follow_us: "Følg os på sociale medier", facebook: "Følg os på Facebook", instagram: "Følg os på Instagram",
             inspection_report: "Se vores smiley-rapport", inspection_report_text: "Se kontrolrapport",
             search_menu_label: "Søg på menuen", search_placeholder: "Søg på menuen…",
             download_pdf: "Download menukort (PDF)",
             our_menu: "Vores menu", our_menu_sub: "Friske sandwiches, wraps og salater – lavet med kærlighed hver dag",
             menu_categories: "Menukategorier", menu_items: "Menupunkter",
-            footer_hours: "Man–Fre 10–18 · Lørdag 10–15 · Søndag lukket",
+            footer_hours: "Man–Fre 10–18 · Lørdag 10–15 · Søndag & helligdage lukket",
             allergens_prefix: "Allergener:", none: "Ingen",
             add_to_cart: "Læg i kurv", choose_type: "Vælg type →",
             choose_variant: "Vælg variant", choose_one_option: "Vælg én mulighed",
@@ -1860,24 +1921,24 @@
             choose: "Choose", prev_image: "Previous image", next_image: "Next image", choose_image: "Choose image",
             slide_facade: "Café storefront", slide_tuna: "Tuna sandwich", slide_interior: "Inside the café", slide_pesto: "Pesto chicken sandwich",
             featured_dishes: "Featured dishes",
-            rec_title: "Café's Recommendation", rec_desc: "Chicken, pesto, mozzarella, fresh lettuce and tomato",
-            rec_img_alt: "Pesto chicken sandwich – café's recommendation",
-            fav_title: "The Favorite", fav_desc: "Chicken, curry, bacon, fresh lettuce and tomato",
-            fav_img_alt: "Chicken curry sandwich – the favorite",
+            rec_title: "Salads", rec_desc: "Broccoli, squash, beans, beetroot and carrots",
+            rec_img_alt: "Hearty salad",
+            fav_title: "Sandwich", fav_desc: "Chicken, curry, bacon, fresh lettuce and tomato",
+            fav_img_alt: "Chicken curry sandwich",
             read_more: "View in menu", read_more_2: "Read more",
             see_menu: "View Menu",
             cta_note_1: "Food for events? We've got that covered too!", cta_note_2: "– Learn more about events & catering",
             contact_hours: "Contact and opening hours",
             contact: "Contact", tel_prefix: "Tel:", mail_prefix: "Email:",
             hours_title: "Opening Hours", hours_weekday: "Mon–Fri", hours_weekday_time: "10am–6pm",
-            hours_saturday: "Saturday", hours_saturday_time: "10am–3pm", hours_sunday: "Sunday", closed: "Closed",
+            hours_saturday: "Saturday", hours_saturday_time: "10am–3pm", hours_sunday: "Sunday", closed: "Closed", hours_holidays: "Public holidays",
             follow_us: "Follow us on social media", facebook: "Follow us on Facebook", instagram: "Follow us on Instagram",
             inspection_report: "View our food hygiene inspection report", inspection_report_text: "View inspection report",
             search_menu_label: "Search the menu", search_placeholder: "Search the menu…",
             download_pdf: "Download Menu (PDF)",
             our_menu: "Our Menu", our_menu_sub: "Fresh sandwiches, wraps and salads – made with love every day",
             menu_categories: "Menu categories", menu_items: "Menu items",
-            footer_hours: "Mon–Fri 10am–6pm · Sat 10am–3pm · Sun closed",
+            footer_hours: "Mon–Fri 10am–6pm · Sat 10am–3pm · Closed Sundays & public holidays",
             allergens_prefix: "Allergens:", none: "None",
             add_to_cart: "Add to cart", choose_type: "Choose type →",
             choose_variant: "Choose variant", choose_one_option: "Choose one option",
@@ -2056,28 +2117,28 @@
             sections: [{
                 label: { da:"Klassikere", en:"Classics" },
                 items: [
-                    { bread:true, id:1,  name:{da:"Kylling m. karry og bacon",en:"Chicken w. curry and bacon"}, desc:{da:"Kylling, Karry, Bacon, frisk salat og tomat",en:"Chicken, curry, bacon, fresh lettuce and tomato"}, img:"foto/Kylling.Karry.PNG", tags:["favorite"], allergenKeys:["gluten","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
+                    { bread:true, id:1,  name:{da:"Kylling m. karry og bacon",en:"Chicken w. curry and bacon"}, desc:{da:"Kylling, Karry, Bacon, frisk salat og tomat",en:"Chicken, curry, bacon, fresh lettuce and tomato"}, img:"foto/Kylling.Karry.PNG", tags:["favorite","popular"], allergenKeys:["gluten","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
                     { bread:true, id:2,  name:{da:"Tunsalat m. bacon",en:"Tuna salad w. bacon"}, desc:{da:"Tunsalat, syltede agurker, bacon, frisk salat og tomat",en:"Tuna salad, pickled cucumbers, bacon, fresh lettuce and tomato"}, img:"foto/Tunsandwich.JPG", tags:["popular"], allergenKeys:["gluten","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
-                    { bread:true, id:3,  name:{da:"Laks m. philadelphiacreme",en:"Salmon w. cream cheese"}, desc:{da:"Koldrøget laks, philadelphiacreme, agurk, rødløg, lucernespirer, frisk salat og tomat",en:"Cold-smoked salmon, cream cheese, cucumber, red onion, alfalfa sprouts, fresh lettuce and tomato"}, img:"foto/Laks med phil.JPG", tags:["popular"], allergenKeys:["gluten","onion","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
+                    { bread:true, id:3,  name:{da:"Laks m. philadelphiacreme",en:"Salmon w. cream cheese"}, desc:{da:"Koldrøget laks, philadelphiacreme, agurk, rødløg, lucernespirer, frisk salat og tomat",en:"Cold-smoked salmon, cream cheese, cucumber, red onion, alfalfa sprouts, fresh lettuce and tomato"}, img:"foto/Laks med phil.JPG", tags:[], allergenKeys:["gluten","onion","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
                     { bread:true, id:4,  name:{da:"Texmex m. krydret kylling, salsa og nachos",en:"Tex-Mex w. spicy chicken, salsa and nachos"}, desc:{da:"Krydret kylling, salsa, nachos, frisk salat og tomat",en:"Spicy chicken, salsa, nachos, fresh lettuce and tomato"}, img:"foto/TexMex.JPG", tags:["popular"], allergenKeys:["gluten","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
                     { bread:true, id:5,  name:{da:"Serranoskinke m. pesto",en:"Serrano ham w. pesto"}, desc:{da:"Ristet serranoskinke, syltede agurker, pinjekerner, grøn pesto, frisk salat og tomat",en:"Roasted serrano ham, pickled cucumbers, pine nuts, green pesto, fresh lettuce and tomato"}, img:"foto/Serrano.JPG", tags:["popular"], allergenKeys:["gluten","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
-                    { bread:true, id:6,  name:{da:"Frikadelle m. rødkål",en:"Meatball w. red cabbage"}, desc:{da:"Frikadelle, syltede agurker, rødkål, frisk salat og tomat",en:"Meatball, pickled cucumbers, red cabbage, fresh lettuce and tomato"}, img:"foto/Frikadelle.JPG", tags:["popular"], allergenKeys:["gluten","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
-                    { bread:true, id:7,  name:{da:"Roastbeef m. sennepsdressing",en:"Roast beef w. mustard dressing"}, desc:{da:"Roastbeef, Sennepsdressing, gulerødder, syltede agurker, rødløg, frisk salat og tomat",en:"Roast beef, mustard dressing, carrots, pickled cucumbers, red onion, fresh lettuce and tomato"}, img:"foto/Roastbeef.JPG", tags:[], allergenKeys:["gluten","mustard","onion","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
-                    { bread:true, id:8,  name:{da:"Æg og rejer",en:"Egg and shrimp"}, desc:{da:"Æg, rejer, agurk, lucernespirer, frisk salat og tomat",en:"Egg, shrimp, cucumber, alfalfa sprouts, fresh lettuce and tomato"}, img:"foto/Æg.JPG", tags:["popular"], allergenKeys:["gluten","shellfish","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
-                    { bread:true, id:9,  name:{da:"Kylling m. pesto og mozzarella",en:"Chicken w. pesto and mozzarella"}, desc:{da:"Kylling, pesto, mozzarella, frisk salat og tomat",en:"Chicken, pesto, mozzarella, fresh lettuce and tomato"}, img:"foto/Kylling.Pesto.JPG", tags:["popular"], allergenKeys:["gluten","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
-                    { bread:true, id:10, name:{da:"Kalkun m. guacamole og bacon",en:"Turkey w. guacamole and bacon"}, desc:{da:"Kalkun, guacamole, rød peber, majs, bacon og frisk salat",en:"Turkey, guacamole, red pepper, corn, bacon and fresh lettuce"}, img:"foto/Kalkun.Guaca.JPG", tags:["popular"], allergenKeys:["gluten"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
-                    { bread:true, id:11, name:{da:"Skinke og ost",en:"Ham and cheese"}, desc:{da:"Skinke, ost, agurk, rød peber og frisk salat",en:"Ham, cheese, cucumber, red pepper and fresh lettuce"}, img:"foto/skinkeOst.JPG", tags:["popular"], allergenKeys:["gluten"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
-                    { bread:true, id:12, name:{da:"Æg m. tomat og bacon",en:"Egg w. tomato and bacon"}, desc:{da:"Æg, agurk, bacon, frisk salat og tomat",en:"Egg, cucumber, bacon, fresh lettuce and tomato"}, img:"foto/ÆgTomatBacon.JPG", tags:["popular"], allergenKeys:["gluten","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
-                    { bread:true, id:13, name:{da:"Kalkun m. ost og bacon",en:"Turkey w. cheese and bacon"}, desc:{da:"kalkun, ost, bacon, agurk, frisk salat og tomat",en:"turkey, cheese, bacon, cucumber, fresh lettuce and tomato"}, img:"foto/KalkunBacon.JPG", tags:["popular"], allergenKeys:["gluten","cheese","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
-                    { bread:true, id:14, name:{da:"Laks m. cremefraiche dressing",en:"Salmon w. sour cream dressing"}, desc:{da:"Laks, cremefraichedressing, agurk, rødløg, lucernespirer, frisk salat og tomat",en:"Salmon, sour cream dressing, cucumber, red onion, alfalfa sprouts, fresh lettuce and tomato"}, img:"foto/LaksDressing.JPG", tags:["popular"], allergenKeys:["gluten","onion","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
-                    { bread:true, id:15, name:{da:"Vegansk m. grøntsagsbøf",en:"Vegan w. vegetable patty"}, desc:{da:"Grøntsagsbøf, hummus, syltede rødløg, sweet chili, frisk salat og tomat",en:"Vegetable patty, hummus, pickled red onion, sweet chili, fresh lettuce and tomato"}, img:"foto/Grøntsagsbøf.JPG", tags:["popular"], allergenKeys:["gluten","onion","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
-                    { bread:true, id:16, name:{da:"Kalkun m. ærtepesto og syltede rødløg",en:"Turkey w. pea pesto and pickled red onion"}, desc:{da:"Kalkun, ærtepesto, syltede rødløg, frisk salat og tomat",en:"Turkey, pea pesto, pickled red onion, fresh lettuce and tomato"}, img:"foto/Ærtepesto.JPG", tags:["popular"], allergenKeys:["gluten","onion","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
-                    { bread:true, id:17, name:{da:"Vegetar m. mozzarella",en:"Vegetarian w. mozzarella"}, desc:{da:"Mozzarella, grøn pesto, pinjekerner, frisk salat og tomat",en:"Mozzarella, green pesto, pine nuts, fresh lettuce and tomato"}, img:"foto/VegetarMozzarella.JPG", tags:["popular"], allergenKeys:["gluten","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
-                    { bread:true, id:18, name:{da:"Kylling m. philadelphiacreme",en:"Chicken w. cream cheese"}, desc:{da:"Kylling, philadelphiacreme, agurk, bacon, frisk salat og tomat",en:"Chicken, cream cheese, cucumber, bacon, fresh lettuce and tomato"}, img:"foto/KyllingPhil.JPG", tags:["popular"], allergenKeys:["gluten","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
-                    { bread:true, id:19, name:{da:"Laksesalat",en:"Salmon salad"}, desc:{da:"Laksemousse, agurk, lucernespirer, frisk salat og tomat",en:"Salmon mousse, cucumber, alfalfa sprouts, fresh lettuce and tomato"}, img:"foto/Laksesalat.JPG", tags:["popular"], allergenKeys:["gluten","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
-                    { bread:true, id:20, name:{da:"Vegetar m. marinerede kartofler",en:"Vegetarian w. marinated potatoes"}, desc:{da:"Marinerede kartofler, soltørrede tomater, pinjekerner, lucernespirer, frisk salat og tomat",en:"Marinated potatoes, sun-dried tomatoes, pine nuts, alfalfa sprouts, fresh lettuce and tomato"}, img:"foto/Kartofler.JPG", tags:["popular"], allergenKeys:["gluten","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
+                    { bread:true, id:6,  name:{da:"Frikadelle m. rødkål",en:"Meatball w. red cabbage"}, desc:{da:"Frikadelle, syltede agurker, rødkål, frisk salat og tomat",en:"Meatball, pickled cucumbers, red cabbage, fresh lettuce and tomato"}, img:"foto/Frikadelle.JPG", tags:[], allergenKeys:["gluten","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
+                    { bread:true, id:7,  name:{da:"Roastbeef m. sennepsdressing",en:"Roast beef w. mustard dressing"}, desc:{da:"Roastbeef, Sennepsdressing, gulerødder, syltede agurker, rødløg, frisk salat og tomat",en:"Roast beef, mustard dressing, carrots, pickled cucumbers, red onion, fresh lettuce and tomato"}, img:"foto/Roastbeef.JPG", tags:["popular"], allergenKeys:["gluten","mustard","onion","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
+                    { bread:true, id:8,  name:{da:"Æg og rejer",en:"Egg and shrimp"}, desc:{da:"Æg, rejer, agurk, lucernespirer, frisk salat og tomat",en:"Egg, shrimp, cucumber, alfalfa sprouts, fresh lettuce and tomato"}, img:"foto/Æg.JPG", tags:[], allergenKeys:["gluten","shellfish","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
+                    { bread:true, id:9,  name:{da:"Kylling m. pesto og mozzarella",en:"Chicken w. pesto and mozzarella"}, desc:{da:"Kylling, pesto, mozzarella, frisk salat og tomat",en:"Chicken, pesto, mozzarella, fresh lettuce and tomato"}, img:"foto/Kylling.Pesto.JPG", tags:[], allergenKeys:["gluten","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
+                    { bread:true, id:10, name:{da:"Kalkun m. guacamole og bacon",en:"Turkey w. guacamole and bacon"}, desc:{da:"Kalkun, guacamole, rød peber, majs, bacon og frisk salat",en:"Turkey, guacamole, red pepper, corn, bacon and fresh lettuce"}, img:"foto/Kalkun.Guaca.JPG", tags:[], allergenKeys:["gluten"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
+                    { bread:true, id:11, name:{da:"Skinke og ost",en:"Ham and cheese"}, desc:{da:"Skinke, ost, agurk, rød peber og frisk salat",en:"Ham, cheese, cucumber, red pepper and fresh lettuce"}, img:"foto/skinkeOst.JPG", tags:[], allergenKeys:["gluten"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
+                    { bread:true, id:12, name:{da:"Æg m. tomat og bacon",en:"Egg w. tomato and bacon"}, desc:{da:"Æg, agurk, bacon, frisk salat og tomat",en:"Egg, cucumber, bacon, fresh lettuce and tomato"}, img:"foto/ÆgTomatBacon.JPG", tags:[], allergenKeys:["gluten","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
+                    { bread:true, id:13, name:{da:"Kalkun m. ost og bacon",en:"Turkey w. cheese and bacon"}, desc:{da:"kalkun, ost, bacon, agurk, frisk salat og tomat",en:"turkey, cheese, bacon, cucumber, fresh lettuce and tomato"}, img:"foto/KalkunBacon.JPG", tags:[], allergenKeys:["gluten","cheese","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
+                    { bread:true, id:14, name:{da:"Laks m. cremefraiche dressing",en:"Salmon w. sour cream dressing"}, desc:{da:"Laks, cremefraichedressing, agurk, rødløg, lucernespirer, frisk salat og tomat",en:"Salmon, sour cream dressing, cucumber, red onion, alfalfa sprouts, fresh lettuce and tomato"}, img:"foto/LaksDressing.JPG", tags:[], allergenKeys:["gluten","onion","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
+                    { bread:true, id:15, name:{da:"Vegansk m. grøntsagsbøf",en:"Vegan w. vegetable patty"}, desc:{da:"Grøntsagsbøf, hummus, syltede rødløg, sweet chili, frisk salat og tomat",en:"Vegetable patty, hummus, pickled red onion, sweet chili, fresh lettuce and tomato"}, img:"foto/Grøntsagsbøf.JPG", tags:["veg"], allergenKeys:["gluten","onion","tomato"], veg:true, variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
+                    { bread:true, id:16, name:{da:"Kalkun m. ærtepesto og syltede rødløg",en:"Turkey w. pea pesto and pickled red onion"}, desc:{da:"Kalkun, ærtepesto, syltede rødløg, frisk salat og tomat",en:"Turkey, pea pesto, pickled red onion, fresh lettuce and tomato"}, img:"foto/Ærtepesto.JPG", tags:[], allergenKeys:["gluten","onion","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
+                    { bread:true, id:17, name:{da:"Vegetar m. mozzarella",en:"Vegetarian w. mozzarella"}, desc:{da:"Mozzarella, grøn pesto, pinjekerner, frisk salat og tomat",en:"Mozzarella, green pesto, pine nuts, fresh lettuce and tomato"}, img:"foto/VegetarMozzarella.JPG", tags:["veg"], allergenKeys:["gluten","tomato"], veg:true, variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
+                    { bread:true, id:18, name:{da:"Kylling m. philadelphiacreme",en:"Chicken w. cream cheese"}, desc:{da:"Kylling, philadelphiacreme, agurk, bacon, frisk salat og tomat",en:"Chicken, cream cheese, cucumber, bacon, fresh lettuce and tomato"}, img:"foto/KyllingPhil.JPG", tags:[], allergenKeys:["gluten","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
+                    { bread:true, id:19, name:{da:"Laksesalat",en:"Salmon salad"}, desc:{da:"Laksemousse, agurk, lucernespirer, frisk salat og tomat",en:"Salmon mousse, cucumber, alfalfa sprouts, fresh lettuce and tomato"}, img:"foto/Laksesalat.JPG", tags:[], allergenKeys:["gluten","tomato"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
+                    { bread:true, id:20, name:{da:"Vegetar m. marinerede kartofler",en:"Vegetarian w. marinated potatoes"}, desc:{da:"Marinerede kartofler, soltørrede tomater, pinjekerner, lucernespirer, frisk salat og tomat",en:"Marinated potatoes, sun-dried tomatoes, pine nuts, alfalfa sprouts, fresh lettuce and tomato"}, img:"foto/Kartofler.JPG", tags:["veg"], allergenKeys:["gluten","tomato"], veg:true, variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
                     { bread:true, id:21, name:{da:"Roasbeef bearnaise m. bagte løg",en:"Roast beef bearnaise w. baked onions"}, desc:{da:"Roastbeef, bearnaise, bagte løg, syltede agurker og frisk salat",en:"Roast beef, bearnaise, baked onions, pickled cucumbers and fresh lettuce"}, img:"foto/RoastbeefBearnaise.JPG", tags:["popular"], allergenKeys:["gluten","onion"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
-                    { bread:true, id:22, name:{da:"Vegansk nobeef, bearnaise m. bagte løg",en:"Vegan no-beef, bearnaise w. baked onions"}, desc:{da:"Vegansk nobeef, bearnaise, bagte løg, syltede agurker og frisk salat",en:"Vegan no-beef, bearnaise, baked onions, pickled cucumbers and fresh lettuce"}, img:"foto/Nobeef.JPG", tags:["popular"], allergenKeys:["gluten","onion"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
+                    { bread:true, id:22, name:{da:"Vegansk nobeef, bearnaise m. bagte løg",en:"Vegan no-beef, bearnaise w. baked onions"}, desc:{da:"Vegansk nobeef, bearnaise, bagte løg, syltede agurker og frisk salat",en:"Vegan no-beef, bearnaise, baked onions, pickled cucumbers and fresh lettuce"}, img:"foto/Nobeef.JPG", tags:["veg"], allergenKeys:["gluten","onion"], veg:true, variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
                 ]
             }]
         },
@@ -2086,8 +2147,8 @@
             sections: [{
                 label: { da:"Wraps", en:"Wraps" },
                 items: [
-                    { id:23, name:{da:"Fuldkornswrap m. laks og creme cheese",en:"Wholegrain wrap w. salmon and cream cheese"}, desc:{da:"Laks, philadelphiacreme, agurk og rødløg",en:"Salmon, cream cheese, cucumber and red onion"}, img:"foto/Wrap_laks.JPG", price:53, tags:["popular"], allergenKeys:["gluten","onion"] },
-                    { id:24, name:{da:"Fuldkornswrap m. kylling og creme cheese",en:"Wholegrain wrap w. chicken and cream cheese"}, desc:{da:"Kylling, philadelphiacreme, soltørret tomat, rød peber",en:"Chicken, cream cheese, sun-dried tomato, red pepper"}, img:"foto/Wrap_kylling.JPG", price:53, tags:["favorite"], allergenKeys:["gluten","sesame"], veg:true },
+                    { id:23, name:{da:"Fuldkornswrap m. laks og creme cheese",en:"Wholegrain wrap w. salmon and cream cheese"}, desc:{da:"Laks, philadelphiacreme, agurk og rødløg",en:"Salmon, cream cheese, cucumber and red onion"}, img:"foto/Wrap_laks.JPG", price:53, tags:[], allergenKeys:["gluten","onion"] },
+                    { id:24, name:{da:"Fuldkornswrap m. kylling og creme cheese",en:"Wholegrain wrap w. chicken and cream cheese"}, desc:{da:"Kylling, philadelphiacreme, soltørret tomat, rød peber",en:"Chicken, cream cheese, sun-dried tomato, red pepper"}, img:"foto/Wrap_kylling.JPG", price:53, tags:[], allergenKeys:["gluten","sesame"], veg:true },
                 ]
             }]
         },
@@ -2097,8 +2158,8 @@
                 label: { da:"Salater", en:"Salads" },
                 items: [
                     { id:25, name:{da:"Grov salat",en:"Hearty salad"}, desc:{da:"Broccoli, squash, bønner, broccolistok, rødbede, gulerødder og spæd salat",en:"Broccoli, squash, beans, broccoli stalk, beetroot, carrots and baby leaf lettuce"}, img:"foto/GrovSalat.JPG", tags:["veg"], allergenKeys:[], veg:true, variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
-                    { id:26, name:{da:"Pastasalat",en:"Pasta salad"}, desc:{da:"Pasta, ærter, rød peber, majs",en:"Pasta, peas, red pepper, corn"}, img:"foto/pastasalat.JPG", tags:["classic"], allergenKeys:["gluten"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
-                    { id:27, name:{da:"Std. salat",en:"Standard salad"}, desc:{da:"Icebergsalat, tomat, agurk, majs, ærter, ananas, gulerod, rødkål.",en:"Iceberg lettuce, tomato, cucumber, corn, peas, pineapple, carrot, red cabbage."}, img:"foto/GrovSalat.JPG", tags:["classic"], allergenKeys:["pineapple"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
+                    { id:26, name:{da:"Pastasalat",en:"Pasta salad"}, desc:{da:"Pasta, ærter, rød peber, majs",en:"Pasta, peas, red pepper, corn"}, img:"foto/pastasalat.JPG", tags:["veg"], allergenKeys:["gluten"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
+                    { id:27, name:{da:"Std. salat",en:"Standard salad"}, desc:{da:"Icebergsalat, tomat, agurk, majs, ærter, ananas, gulerod, rødkål.",en:"Iceberg lettuce, tomato, cucumber, corn, peas, pineapple, carrot, red cabbage."}, img:"foto/GrovSalat.JPG", tags:["veg"], allergenKeys:["pineapple"], variantLabel:{da:"Vælg størrelse",en:"Choose size"}, variants:[{key:"small",label:{da:"Lille",en:"Small"},price:53},{key:"large",label:{da:"Stor",en:"Large"},price:73}] },
                 ]
             }]
         },
@@ -2125,28 +2186,154 @@
     /* Galleri-indhold til Selskaber-siden (tosproget) */
     const GALLERY_DATA = {
         tapas: {
-            da: { title:'Tapas', images:['foto/Tapas.JPG'], desc:
-                    'Vores tapas består som udgangspunkt af flg.:\n \n3 charcuteri\n2 oste\n1-2 specialiteter \n3 slags dip\nCornichoner\nNybagt brød. \nAlt kan selvfølgelig tilpasses efter ønske.\n\nTapas kan anrettes enten som ”delefad” eller som buffet, og kan også anrettes i engangsbakker lige til at tage med i skoven osv.\n\nIntet er for stort og intet er for småt! Vi tager imod ordre til en hyggeaften for 2, og til den helt store reception.\n\nRing gerne eller kom forbi til en snak om netop dine ønsker.\n\nPris 175,- pr couvert' },
-            en: { title:'Tapas', images:['foto/Tapas.JPG'], desc:
-                    "Our tapas typically consists of the following:\n \n3 charcuterie selections\n2 cheeses\n1-2 specialities \n3 kinds of dip\nCornichons\nFreshly baked bread. \nEverything can of course be adapted to your wishes.\n\nTapas can be arranged either as a \"sharing platter\" or as a buffet, and can also be arranged in disposable trays ready to take along, e.g. to the woods.\n\nNothing is too big and nothing is too small! We take orders for a cozy evening for 2, all the way up to the biggest reception.\n\nFeel free to call or drop by for a chat about exactly what you need.\n\nPrice 175 kr per cover" }
+            da: { title:'Tapas', images:[{src:'foto/Tapas.JPG',alt:'Tapas anrettet med charcuteri, oste og tilbehør'},{src:'foto/Tapas1.JPG',alt:'Tapas – detaljebillede'}], desc:
+                    '<p class="sb-para">Vores tapas består som udgangspunkt af flg.:</p>'
+                    + '<ul class="sb-item-list">'
+                    + '<li>3 charcuteri</li>'
+                    + '<li>2 oste</li>'
+                    + '<li>1-2 specialiteter</li>'
+                    + '<li>3 slags dip</li>'
+                    + '<li>Cornichoner</li>'
+                    + '<li>Nybagt brød</li>'
+                    + '</ul>'
+                    + '<p class="sb-para">Alt kan selvfølgelig tilpasses efter ønske.</p>'
+                    + '<p class="sb-para">Tapas kan anrettes enten som "delefad" eller som buffet, og kan også anrettes i engangsbakker lige til at tage med i skoven osv.</p>'
+                    + '<p class="sb-para">Intet er for stort og intet er for småt! Vi tager imod ordre til en hyggeaften for 2, og til den helt store reception.</p>'
+                    + '<p class="sb-para">Ring gerne eller kom forbi til en snak om netop dine ønsker.</p>'
+                    + '<div class="sb-price-tag">Pris 175,- pr. couvert</div>' },
+            en: { title:'Tapas', images:[{src:'foto/Tapas.JPG',alt:'Tapas platter with charcuterie, cheeses and accompaniments'},{src:'foto/Tapas1.JPG',alt:'Close-up of the tapas platter'}], desc:
+                    '<p class="sb-para">Our tapas typically consists of the following:</p>'
+                    + '<ul class="sb-item-list">'
+                    + '<li>3 charcuterie selections</li>'
+                    + '<li>2 cheeses</li>'
+                    + '<li>1-2 specialities</li>'
+                    + '<li>3 kinds of dip</li>'
+                    + '<li>Cornichons</li>'
+                    + '<li>Freshly baked bread</li>'
+                    + '</ul>'
+                    + '<p class="sb-para">Everything can of course be adapted to your wishes.</p>'
+                    + '<p class="sb-para">Tapas can be arranged either as a "sharing platter" or as a buffet, and can also be arranged in disposable trays ready to take along, e.g. to the woods.</p>'
+                    + '<p class="sb-para">Nothing is too big and nothing is too small! We take orders for a cozy evening for 2, all the way up to the biggest reception.</p>'
+                    + '<p class="sb-para">Feel free to call or drop by for a chat about exactly what you need.</p>'
+                    + '<div class="sb-price-tag">Price 175 kr per cover</div>' }
         },
         smorrebrod: {
-            da: { title:'Smørebrød', images:['foto/Smørrebrød.JPG'], desc:
-                    'Almindelig:\n\nFiskefilet med remoulade\t\t\t\t\t\t\n32,-\nRoastbeef med remoulade og ristede løg\t\t\t\t\t\t32,-\nFrikadelle med rødkål og surt\t\t\t\t\t\t32,-\nDyrlægens natmad med sky\t\t\t\t\t\t32,-\nRullepølse med sky og løg\t\t\t\t\t\t32,-\nÆg og rejer\t\t\t\t\t\t32,-\nSkinke med italiensk salat\t\t\t\t\t\t32,-\nAla Sandwich-Cafeen:\t\t\t\t\t\t\nMarinerede kartofler med semidried tomater\t\t\t\t\t\t32,-\nKylling med karry og bacon\t\t\t\t\t\t32,-\nItaliensk salami med ærtepesto og syltede rødløg\t\t\t\t\t\t32,-\nVarmrøget laksesalat  med urter og lime\t\t\t\t\t\t32,-\n\nVed bestilling af smørrebrød, skal bestillingen skal senest foretages dagen før.\nRing 56 65 04 28 og hør nærmere (vi tager for nuværende kun imod bestillinger på smørrebrød via tlf.)\n\nDer tages forbehold for trykfejl og prisændringer.\t' },
-            en: { title:"Smørrebrød (Open Sandwiches)", images:['foto/Smørrebrød.JPG'], desc:
-                    'Classic:\n\nFish fillet with remoulade\t\t\t\t\t\t\n32 kr\nRoast beef with remoulade and crispy fried onions\t\t\t\t\t\t32 kr\nMeatball with red cabbage and pickles\t\t\t\t\t\t32 kr\n"Vet\'s midnight snack" with meat jelly\t\t\t\t\t\t32 kr\nLiver sausage with meat jelly and onion\t\t\t\t\t\t32 kr\nEgg and shrimp\t\t\t\t\t\t32 kr\nHam with Italian salad\t\t\t\t\t\t32 kr\nSandwich Cafeen style:\t\t\t\t\t\t\nMarinated potatoes with semi-dried tomatoes\t\t\t\t\t\t32 kr\nChicken with curry and bacon\t\t\t\t\t\t32 kr\nItalian salami with pea pesto and pickled red onion\t\t\t\t\t\t32 kr\nWarm-smoked salmon salad with herbs and lime\t\t\t\t\t\t32 kr\n\nFor open sandwich orders, the order must be placed by the day before at the latest.\nCall 56 65 04 28 to hear more (we currently only accept open sandwich orders by phone).\n\nWe reserve the right to printing errors and price changes.\t' }
+            da: { title:'Smørebrød', images:[{src:'foto/Smørrebrød.JPG',alt:'Smørrebrød anrettet på et fad med klassisk dansk pålæg'},{src:'foto/Smørrebrød1.JPG',alt:'Smørrebrød – detaljebillede'}], desc:
+                    '<div class="sb-heading">Almindelig</div>'
+                    + '<ul class="sb-item-list">'
+                    + '<li>Fiskefilet med remoulade</li>'
+                    + '<li>Roastbeef med remoulade og ristede løg</li>'
+                    + '<li>Frikadelle med rødkål og surt</li>'
+                    + '<li>Dyrlægens natmad med sky</li>'
+                    + '<li>Rullepølse med sky og løg</li>'
+                    + '<li>Æg og rejer</li>'
+                    + '<li>Skinke med italiensk salat</li>'
+                    + '</ul>'
+                    + '<div class="sb-heading">Ala Sandwich-Cafeen</div>'
+                    + '<ul class="sb-item-list">'
+                    + '<li>Marinerede kartofler med semidried tomater</li>'
+                    + '<li>Kylling med karry og bacon</li>'
+                    + '<li>Italiensk salami med ærtepesto og syltede rødløg</li>'
+                    + '<li>Varmrøget laksesalat med urter og lime</li>'
+                    + '</ul>'
+                    + '<div class="sb-price-tag">32,- pr. stk.</div>'
+                    + '<div class="sb-note">Ved bestilling af smørrebrød, skal bestillingen skal senest foretages dagen før.\nRing 56 65 04 28 og hør nærmere (vi tager for nuværende kun imod bestillinger på smørrebrød via tlf.)\n\nDer tages forbehold for trykfejl og prisændringer.</div>' },
+            en: { title:"Smørrebrød (Open Sandwiches)", images:[{src:'foto/Smørrebrød.JPG',alt:'Open sandwiches arranged on a platter with classic Danish toppings'},{src:'foto/Smørrebrød1.JPG',alt:'Close-up of the open sandwiches'}], desc:
+                    '<div class="sb-heading">Classic</div>'
+                    + '<ul class="sb-item-list">'
+                    + '<li>Fish fillet with remoulade</li>'
+                    + '<li>Roast beef with remoulade and crispy fried onions</li>'
+                    + '<li>Meatball with red cabbage and pickles</li>'
+                    + '<li>"Vet\'s midnight snack" with meat jelly</li>'
+                    + '<li>Liver sausage with meat jelly and onion</li>'
+                    + '<li>Egg and shrimp</li>'
+                    + '<li>Ham with Italian salad</li>'
+                    + '</ul>'
+                    + '<div class="sb-heading">Sandwich Cafeen Style</div>'
+                    + '<ul class="sb-item-list">'
+                    + '<li>Marinated potatoes with semi-dried tomatoes</li>'
+                    + '<li>Chicken with curry and bacon</li>'
+                    + '<li>Italian salami with pea pesto and pickled red onion</li>'
+                    + '<li>Warm-smoked salmon salad with herbs and lime</li>'
+                    + '</ul>'
+                    + '<div class="sb-price-tag">32 kr per piece</div>'
+                    + '<div class="sb-note">For open sandwich orders, the order must be placed by the day before at the latest.\nCall 56 65 04 28 to hear more (we currently only accept open sandwich orders by phone).\n\nWe reserve the right to printing errors and price changes.</div>' }
         },
         minimad: {
             da: { title:'Minimad', images:[{src:'foto/Minimad.JPG',alt:'Udvalg af minimad – ostekurve, bruschetta og rispapirruller'},{src:'foto/Minimad1.JPG',alt:'Eksempel på minihapser'}], desc:
-                    '\nMinimad er vores bud på mad til receptioner, barnedåb eller fødselsdag og alt derimellem.\n\nMinimad kan bestå af:\n \nOstekurve med sherrytomat og feta\nBruchetta med svampe\nRispapirruller med kæmperejer og grønt\nBurrata med teryaki sovs\nMinismørrebrød med klassisk pålæg eller pålæg a´la Sandwich-Cafeen\nMinihapsere af blødt toastbrød og forskelligt fyld.\nMinipizzaer med kartoffel, ricotta og rosmarin.\nPink laksetårne med smørreost.\nPris pr stk 24 kr' },
+                    '<p class="sb-para">Minimad er vores bud på mad til receptioner, barnedåb eller fødselsdag og alt derimellem.</p>'
+                    + '<p class="sb-para">Minimad kan bestå af:</p>'
+                    + '<ul class="sb-item-list">'
+                    + '<li>Ostekurve med sherrytomat og feta</li>'
+                    + '<li>Bruchetta med svampe</li>'
+                    + '<li>Rispapirruller med kæmperejer og grønt</li>'
+                    + '<li>Burrata med teryaki sovs</li>'
+                    + '<li>Minismørrebrød med klassisk pålæg eller pålæg a´la Sandwich-Cafeen</li>'
+                    + '<li>Minihapsere af blødt toastbrød og forskelligt fyld</li>'
+                    + '<li>Minipizzaer med kartoffel, ricotta og rosmarin</li>'
+                    + '<li>Pink laksetårne med smørreost</li>'
+                    + '</ul>'
+                    + '<div class="sb-price-tag">Pris pr. stk. 24 kr</div>' },
             en: { title:'Canapés', images:[{src:'foto/Minimad.JPG',alt:'Selection of canapés – cheese baskets, bruschetta and rice paper rolls'},{src:'foto/Minimad1.JPG',alt:'Example of mini toasts'}], desc:
-                    '\nCanapés are our take on food for receptions, christenings or birthdays and everything in between.\n\nCanapés can include:\n \nCheese baskets with sherry tomato and feta\nBruschetta with mushrooms\nRice paper rolls with jumbo shrimp and greens\nBurrata with teriyaki sauce\nMini open sandwiches with classic toppings or Sandwich Cafeen-style toppings\nMini toasts with soft toast bread and various fillings.\nMini pizzas with potato, ricotta and rosemary.\nPink salmon towers with cream cheese.\nPrice per piece 24 kr' }
+                    '<p class="sb-para">Canapés are our take on food for receptions, christenings or birthdays and everything in between.</p>'
+                    + '<p class="sb-para">Canapés can include:</p>'
+                    + '<ul class="sb-item-list">'
+                    + '<li>Cheese baskets with sherry tomato and feta</li>'
+                    + '<li>Bruschetta with mushrooms</li>'
+                    + '<li>Rice paper rolls with jumbo shrimp and greens</li>'
+                    + '<li>Burrata with teriyaki sauce</li>'
+                    + '<li>Mini open sandwiches with classic toppings or Sandwich Cafeen-style toppings</li>'
+                    + '<li>Mini toasts with soft toast bread and various fillings</li>'
+                    + '<li>Mini pizzas with potato, ricotta and rosemary</li>'
+                    + '<li>Pink salmon towers with cream cheese</li>'
+                    + '</ul>'
+                    + '<div class="sb-price-tag">Price per piece 24 kr</div>' }
         },
         minisandwich: {
             da: { title:'Minisandwich', images:[{src:'foto/Minimad.JPG',alt:"Udvalg af minisandwich – Den go'e gamle klassiker trekantsandwichen hvis det skal være lidt nemt"},{src:'foto/Minisandwich.JPG',alt:'Eksempel på minisandwich/trekantsandwich'}], desc:
-                    '\nDen go\'e gamle klassiker trekantsandwichen hvis det skal være lidt nemt. Lavet af blødt fuldkornstoast med fyld ala Sandwich-Cafeen.\n\nFeks :\n \nKylling karry og bacon\nSkinke og ost\nÆggesalat med bacon\nTunsalat\nRoastbeef og sennepsmayo\n25 kr. pr stk.\n\nSkal det være lidt mere lækkert eller er det bare til den lille sult er minisandwich et godt bud.\nDeluxe Minisandwich laves med:\n \nLaksesalat\nHønsemousse\nRoastbeef og sennepsmayo\nItaliensk salami og ærtepesto\nÆggesalat og bacon\nTunsalat\n12 kr. pr stk.' },
+                    '<p class="sb-para">Den go\'e gamle klassiker trekantsandwichen hvis det skal være lidt nemt. Lavet af blødt fuldkornstoast med fyld ala Sandwich-Cafeen.</p>'
+                    + '<p class="sb-para">Feks:</p>'
+                    + '<ul class="sb-item-list">'
+                    + '<li>Kylling karry og bacon</li>'
+                    + '<li>Skinke og ost</li>'
+                    + '<li>Æggesalat med bacon</li>'
+                    + '<li>Tunsalat</li>'
+                    + '<li>Roastbeef og sennepsmayo</li>'
+                    + '</ul>'
+                    + '<div class="sb-price-tag">25 kr. pr. stk.</div>'
+                    + '<p class="sb-para">Skal det være lidt mere lækkert eller er det bare til den lille sult er minisandwich et godt bud.</p>'
+                    + '<p class="sb-para">Deluxe Minisandwich laves med:</p>'
+                    + '<ul class="sb-item-list">'
+                    + '<li>Laksesalat</li>'
+                    + '<li>Hønsemousse</li>'
+                    + '<li>Roastbeef og sennepsmayo</li>'
+                    + '<li>Italiensk salami og ærtepesto</li>'
+                    + '<li>Æggesalat og bacon</li>'
+                    + '<li>Tunsalat</li>'
+                    + '</ul>'
+                    + '<div class="sb-price-tag">12 kr. pr. stk.</div>' },
             en: { title:'Mini Sandwiches', images:[{src:'foto/Minimad.JPG',alt:"Selection of mini sandwiches – the good old classic triangle sandwich if it needs to be easy"},{src:'foto/Minisandwich.JPG',alt:'Example of mini/triangle sandwiches'}], desc:
-                    '\nThe good old classic triangle sandwich, if it needs to be easy. Made from soft wholegrain toast bread with Sandwich Cafeen-style fillings.\n\nFor example:\n \nChicken curry and bacon\nHam and cheese\nEgg salad with bacon\nTuna salad\nRoast beef and mustard mayo\n25 kr per piece.\n\nIf you\'d like something a bit more indulgent, or just something for a small appetite, mini sandwiches are a great choice.\nDeluxe Mini Sandwiches are made with:\n \nSalmon salad\nChicken mousse\nRoast beef and mustard mayo\nItalian salami and pea pesto\nEgg salad and bacon\nTuna salad\n12 kr per piece.' }
+                    '<p class="sb-para">The good old classic triangle sandwich, if it needs to be easy. Made from soft wholegrain toast bread with Sandwich Cafeen-style fillings.</p>'
+                    + '<p class="sb-para">For example:</p>'
+                    + '<ul class="sb-item-list">'
+                    + '<li>Chicken curry and bacon</li>'
+                    + '<li>Ham and cheese</li>'
+                    + '<li>Egg salad with bacon</li>'
+                    + '<li>Tuna salad</li>'
+                    + '<li>Roast beef and mustard mayo</li>'
+                    + '</ul>'
+                    + '<div class="sb-price-tag">25 kr per piece</div>'
+                    + '<p class="sb-para">If you\'d like something a bit more indulgent, or just something for a small appetite, mini sandwiches are a great choice.</p>'
+                    + '<p class="sb-para">Deluxe Mini Sandwiches are made with:</p>'
+                    + '<ul class="sb-item-list">'
+                    + '<li>Salmon salad</li>'
+                    + '<li>Chicken mousse</li>'
+                    + '<li>Roast beef and mustard mayo</li>'
+                    + '<li>Italian salami and pea pesto</li>'
+                    + '<li>Egg salad and bacon</li>'
+                    + '<li>Tuna salad</li>'
+                    + '</ul>'
+                    + '<div class="sb-price-tag">12 kr per piece</div>' }
         }
     };
 
@@ -2310,8 +2497,31 @@
                 b.onclick = () => switchCat(i);
                 tabRow.appendChild(b);
             });
+            initTabRowScrollHint();
         }
         buildContent();
+    }
+
+    /* Viser en tonet kant på kategori-fanerne når der er flere skjulte
+       til højre (fx "Drikkevarer" uden for skærmen), tonen forsvinder
+       når man har scrollet helt til den sidste fane. */
+    function initTabRowScrollHint() {
+        const wrap = document.getElementById('tabRowWrap');
+        const tabRow = document.getElementById('tabRow');
+        if (!wrap || !tabRow) return;
+        let ticking = false;
+        function updateFade() {
+            const atEnd = tabRow.scrollLeft + tabRow.clientWidth >= tabRow.scrollWidth - 4;
+            wrap.classList.toggle('at-end', atEnd);
+            ticking = false;
+        }
+        updateFade();
+        tabRow.addEventListener('scroll', () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(updateFade);
+        }, { passive: true });
+        window.addEventListener('resize', updateFade);
     }
 
     function switchCat(i) {
@@ -2371,8 +2581,9 @@
         el.onclick = () => openModal(item);
         const tgs = (item.tags || []).map(t => {
             let c = 'tag';
-            if (t === 'veg') c += ' veg';
-            return `<span class="${c}">${TAG_LABELS[currentLang][t] || t}</span>`;
+            let label = TAG_LABELS[currentLang][t] || t;
+            if (t === 'veg') { c += ' veg'; label = '🌱 ' + label; }
+            return `<span class="${c}">${label}</span>`;
         }).join('');
         const choiceBadge = item.variants ? `<span class="tag choice" aria-hidden="true">${TRANSLATIONS[currentLang].choose_type}</span>` : '';
         const addAria = item.variants ? (currentLang === 'da' ? 'Vælg type for ' : 'Choose type for ') + name : (currentLang === 'da' ? 'Tilføj ' : 'Add ') + name + (currentLang === 'da' ? ' til kurv' : ' to cart');
@@ -3169,9 +3380,55 @@
     }
 
     /* ════════════════════════════════════════════
+       GALLERI-SCROLL-HINT (Selskaber-siden)
+       Viser prikker for hvert kort og tonet kant der
+       signalerer at der er flere kort at scrolle til –
+       tonen forsvinder når man når det sidste kort.
+    ════════════════════════════════════════════ */
+    function initGalleryScrollHint() {
+        const wrap = document.getElementById('galleryWrap');
+        const gallery = document.getElementById('menuGallery');
+        const dotsEl = document.getElementById('galleryDots');
+        if (!wrap || !gallery || !dotsEl) return;
+        const items = Array.from(gallery.querySelectorAll('.gallery-item'));
+        if (!items.length) return;
+
+        dotsEl.innerHTML = '';
+        items.forEach((_, i) => {
+            const d = document.createElement('span');
+            d.className = 'gdot' + (i === 0 ? ' on' : '');
+            dotsEl.appendChild(d);
+        });
+        const dots = dotsEl.querySelectorAll('.gdot');
+
+        let ticking = false;
+        function updateHint() {
+            const center = gallery.scrollLeft + gallery.clientWidth / 2;
+            let closest = 0, closestDist = Infinity;
+            items.forEach((it, i) => {
+                const mid = it.offsetLeft + it.offsetWidth / 2;
+                const dist = Math.abs(mid - center);
+                if (dist < closestDist) { closestDist = dist; closest = i; }
+            });
+            dots.forEach((d, i) => d.classList.toggle('on', i === closest));
+            const atEnd = gallery.scrollLeft + gallery.clientWidth >= gallery.scrollWidth - 8;
+            wrap.classList.toggle('at-end', atEnd);
+            ticking = false;
+        }
+        updateHint();
+        gallery.addEventListener('scroll', () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(updateHint);
+        }, { passive: true });
+        window.addEventListener('resize', updateHint);
+    }
+
+    /* ════════════════════════════════════════════
        INITIALISERING AF SPROG VED SIDEINDLÆSNING
     ════════════════════════════════════════════ */
     setLang(currentLang);
+    initGalleryScrollHint();
 </script>
 <script type="application/ld+json">
     {
@@ -3179,7 +3436,7 @@
         "@type": "Restaurant",
         "name": "Sandwich Cafeen",
         "url": "https://www.sandwichcafeen.dk",
-        "image": "https://www.sandwichcafeen.dk/foto/Fasade.png",
+        "image": "https://www.sandwichcafeen.dk/foto/Drikke.JPG",
         "telephone": "+4556650428",
         "servesCuisine": "Sandwiches",
         "priceRange": "kr. 50-100",
